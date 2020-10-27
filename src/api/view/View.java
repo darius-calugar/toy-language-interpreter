@@ -13,11 +13,8 @@ import api.model.statements.*;
 import api.model.types.BoolType;
 import api.model.types.IntType;
 import api.model.values.BoolValue;
-import api.model.values.IValue;
 import api.model.values.IntValue;
-import api.model.values.True;
 import api.repository.MonoRepository;
-import com.sun.source.tree.NewArrayTree;
 
 public class View {
     Controller controller;
@@ -34,30 +31,90 @@ public class View {
 
     static public void main(String[] args) {
         var programState = new ProgramState(
-                new Stack<IStatement>(),
-                new Dictionary<String, IValue>(),
-                new List<IValue>(),
-                example1());
+                new Stack<>(),
+                new Dictionary<>(),
+                new List<>(),
+                example3());
         var repository = new MonoRepository(programState);
         var controller = new Controller(repository);
-        var view = new View(controller);
+        var view       = new View(controller);
         view.start();
     }
 
+    /**
+     int v;
+     v = 2;
+     print(v);
+     */
     static private IStatement example1() {
         return new CompoundStatement(
-                new DeclareStatement("x", new IntType()),
+                new DeclareStatement("v", new IntType()),
                 new CompoundStatement(
-                        new AssignStatement("x", new ArithmeticExpression(new ValueExpression(new IntValue(1)), new ValueExpression(new IntValue(3)), ArithmeticOperation.add)),
+                        new AssignStatement("v", new ValueExpression(new IntValue(2))),
                         new PrintStatement(new VariableExpression("x"))
-                ));
+                )
+        );
     }
 
+    /**
+     int a;
+     int b;
+     a = 2 + 3 * 5;
+     b = a + 1;
+     print(b);
+     */
     static private IStatement example2() {
-        return new NullStatement();
+        return new CompoundStatement(
+                new DeclareStatement("a", new IntType()),
+                new CompoundStatement(
+                        new DeclareStatement("b", new IntType()),
+                        new CompoundStatement(
+                                new AssignStatement("a", new ArithmeticExpression(
+                                        new ValueExpression(new IntValue(2)),
+                                        new ArithmeticExpression(
+                                                new ValueExpression(new IntValue(3)),
+                                                new ValueExpression(new IntValue(5)),
+                                                ArithmeticOperation.multiply
+                                        ),
+                                        ArithmeticOperation.add
+                                )),
+                                new CompoundStatement(
+                                        new AssignStatement("b", new ArithmeticExpression(
+                                                new VariableExpression("a"),
+                                                new ValueExpression(new IntValue(1)),
+                                                ArithmeticOperation.add
+                                        )),
+                                        new PrintStatement(new VariableExpression("b"))
+                                )
+                        )
+                )
+        );
     }
 
+    /**
+     bool a;
+     int v;
+     a=true;
+     if(a) v = 2;
+     else  v = 3;
+     print(v);
+     */
     static private IStatement example3() {
-        return new NullStatement();
+        return new CompoundStatement(
+                new DeclareStatement("a", new BoolType()),
+                new CompoundStatement(
+                        new DeclareStatement("v", new IntType()),
+                        new CompoundStatement(
+                                new AssignStatement("a", new ValueExpression(new BoolValue(true))),
+                                new CompoundStatement(
+                                        new IfStatement(new VariableExpression("a"),
+                                                new AssignStatement("v", new ValueExpression(new IntValue(2))),
+                                                new AssignStatement("v", new ValueExpression(new IntValue(3)))
+                                                ),
+                                        new PrintStatement(new VariableExpression("v"))
+                                )
+                        )
+                )
+        );
     }
 }

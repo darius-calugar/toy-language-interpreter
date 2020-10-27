@@ -10,6 +10,11 @@ public class BoolType implements IType {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        return getClass() == obj.getClass();
+    }
+
+    @Override
     public String toString() {
         return "bool";
     }

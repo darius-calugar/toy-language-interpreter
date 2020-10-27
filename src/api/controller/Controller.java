@@ -2,7 +2,6 @@ package api.controller;
 
 import api.model.ProgramState;
 import api.model.exceptions.OutOfBoundsException;
-import api.model.statements.IStatement;
 import api.repository.IRepository;
 
 public class Controller {
@@ -28,7 +27,7 @@ public class Controller {
         return state;
     }
 
-    public ProgramState allStep() {
+    public void allStep() {
         var stack = state.getExecutionStack();
         while (!stack.isEmpty()) {
             var statement = stack.pop();
@@ -36,12 +35,10 @@ public class Controller {
             if (displayOnStepFlag)
                 System.out.println(state.toString());
         }
-        return state;
     }
     // endregion
 
     // region Getters/Setters
-
     public ProgramState getState() {
         return state;
     }
@@ -57,6 +54,5 @@ public class Controller {
     public void setDisplayOnStepFlag(boolean displayOnStepFlag) {
         this.displayOnStepFlag = displayOnStepFlag;
     }
-
     // endregion
 }
