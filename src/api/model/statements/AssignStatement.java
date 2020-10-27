@@ -1,29 +1,33 @@
 package api.model.statements;
 
-import api.MyException;
+import api.model.exceptions.InvalidTypeException;
+import api.model.exceptions.MyException;
 import api.model.ProgramState;
+import api.model.exceptions.UndefinedVariableException;
 import api.model.expressions.IExpression;
 
 public class AssignStatement implements IStatement {
     String      varId;
     IExpression expression;
 
-    @Override
-    public ProgramState execute(ProgramState state) throws MyException {
-        var symbolTable = state.getSymbolTable();
+    public AssignStatement(String varId, IExpression expression) {
+        this.varId = varId;
+        this.expression = expression;
+    }
 
-        if (symbolTable.isDefined(varId)) {
-            var value = expression.evaluate(symbolTable);
-            var varType = symbolTable.get(varId).getType();
-            if (value.getType().equals(varType))
-                symbolTable.set(varId, value);
-            else
-                throw new MyException(String.format("Types of '%s' and '%s' do not match", value.getType(), varType));
-                // TODO - Use specific exception type
-        }
-        else
-            throw new MyException(String.format("Variable '%s' was not declared", varId));
-            // TODO - Use specific exception type
+    @Override
+    public ProgramState execute(ProgramState state) throws UndefinedVariableException, InvalidTypeException {
+        var symbolTable = state.getSymbolTable();
+        var value = expression.evaluate(symbolTable);
+
+        if (!symbolTable.isDefined(varId))
+            throw new UndefinedVariableException(varId);
+        var varType = symbolTable.get(varId).getType();
+
+        if (!value.getType().equals(varType))
+            throw new InvalidTypeException(varType, value.getType());
+
+        symbolTable.set(varId, value);
         return state;
     }
 
@@ -31,4 +35,8 @@ public class AssignStatement implements IStatement {
     public String toString() {
         return String.format("%s=%s", varId, expression);
     }
+
+    public String getVarId() { return varId; }
+
+    public IExpression getExpression() { return expression; }
 }

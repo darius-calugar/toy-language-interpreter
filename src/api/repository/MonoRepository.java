@@ -5,7 +5,7 @@ import api.model.ProgramState;
 public class MonoRepository implements IRepository {
     ProgramState state;
 
-    MonoRepository(ProgramState state) {
+    public MonoRepository(ProgramState state) {
         this.state = state;
     }
 

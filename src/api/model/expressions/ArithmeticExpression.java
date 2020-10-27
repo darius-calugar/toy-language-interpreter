@@ -1,0 +1,58 @@
+package api.model.expressions;
+
+import api.model.collections.IDictionary;
+import api.model.exceptions.InvalidTypeException;
+import api.model.types.IType;
+import api.model.types.IntType;
+import api.model.values.IValue;
+import api.model.values.Integer;
+
+public class ArithmeticExpression implements IExpression {
+    IExpression         lhs;
+    IExpression         rhs;
+    ArithmeticOperation operation;
+
+    public ArithmeticExpression(IExpression lhs, IExpression rhs, ArithmeticOperation operation) {
+        this.lhs       = lhs;
+        this.rhs       = rhs;
+        this.operation = operation;
+    }
+
+    @Override
+    public IValue evaluate(IDictionary<String, IValue> symTable) throws InvalidTypeException {
+        // Fetch values of inner expression
+        IType expectedType = new IntType();
+        var   lValue       = lhs.evaluate(symTable);
+        var   rValue       = rhs.evaluate(symTable);
+
+        // Check expression value types
+        if (!lValue.getType().equals(expectedType))
+            throw new InvalidTypeException(expectedType, lValue.getType());
+        if (!rValue.getType().equals(expectedType))
+            throw new InvalidTypeException(expectedType, lValue.getType());
+
+        // Fetch raw values of inner expression
+        var lRawValue = ((Integer) lValue).getRawValue();
+        var rRawValue = ((Integer) rValue).getRawValue();
+
+        // Apply appropriate operation
+        return switch (operation) {
+            case add -> new Integer(lRawValue + rRawValue);
+            case subtract -> new Integer(lRawValue - rRawValue);
+            case multiply -> new Integer(lRawValue * rRawValue);
+            case divide -> new Integer(lRawValue / rRawValue);
+            case mod -> new Integer(lRawValue % rRawValue);
+        };
+    }
+
+    @Override
+    public String toString() {
+        return switch (operation) {
+            case add -> String.format("%s+%s",lhs, rhs);
+            case subtract -> String.format("%s-%s",lhs, rhs);
+            case multiply -> String.format("%s*%s",lhs, rhs);
+            case divide -> String.format("%s/%s",lhs, rhs);
+            case mod -> String.format("%s%%%s",lhs, rhs);
+        };
+    }
+}

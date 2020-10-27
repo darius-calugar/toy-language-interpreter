@@ -10,23 +10,19 @@ public class ProgramState {
     IStack<IStatement>          executionStack;
     IDictionary<String, IValue> symbolTable;
     IList<IValue>               outputList;
-    IStatement                  original;
 
-    public ProgramState(IStack<IStatement> executionStack, IDictionary<String, IValue> symbolTable, IList<IValue> outputList, IStatement programStatement) {
+    public ProgramState(IStack<IStatement> executionStack, IDictionary<String, IValue> symbolTable, IList<IValue> outputList) {
         this.executionStack = executionStack;
         this.symbolTable    = symbolTable;
         this.outputList     = outputList;
-        this.original       = programStatement; // TODO - Use deep copy
-        executionStack.push(programStatement);
     }
 
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s",
-                executionStack,
-                symbolTable,
-                outputList,
-                original);
+        return "================ STATE ================\n" +
+               "Execution Stack:\n" + executionStack + "\n\n" +
+               "Symbol Table:\n" + symbolTable + "\n\n" +
+               "Output List:\n" + outputList + "\n\n";
     }
 
     //region getters/setters
@@ -53,14 +49,6 @@ public class ProgramState {
 
     public void setOutputList(IList<IValue> outputList) {
         this.outputList = outputList;
-    }
-
-    public IStatement getOriginal() {
-        return original;
-    }
-
-    public void setOriginal(IStatement original) {
-        this.original = original;
     }
 
     //endregion

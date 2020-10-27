@@ -1,7 +1,8 @@
 package api.model.statements;
-import api.MyException;
+import api.model.exceptions.MyException;
 import api.model.ProgramState;
+import api.model.exceptions.StatementException;
 
 public interface IStatement {
-    ProgramState execute(ProgramState state) throws MyException;
+    ProgramState execute(ProgramState state) throws StatementException;
 }

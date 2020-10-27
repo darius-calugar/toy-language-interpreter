@@ -1,26 +1,33 @@
 package api.model.statements;
 
-import api.MyException;
+import api.model.exceptions.MultipleDefinitionException;
 import api.model.ProgramState;
 import api.model.types.IType;
 
 public class DeclareStatement implements IStatement {
     String varId;
-    IType type;
+    IType  type;
+
+    public DeclareStatement(String varId, IType type) {
+        this.varId = varId;
+        this.type  = type;
+    }
 
     @Override
-    public ProgramState execute(ProgramState state) throws MyException {
+    public ProgramState execute(ProgramState state) throws MultipleDefinitionException {
         var symbolTable = state.getSymbolTable();
         if (symbolTable.isDefined(varId))
-            throw new MyException(String.format(""));
-            // TODO - Use specific exception type
-        // symbolTable.set(varId, ???);
-        // TODO - Implement
+            throw new MultipleDefinitionException(varId);
+        symbolTable.set(varId, null);
         return state;
     }
 
     @Override
     public String toString() {
-        return String.format("Variable '%s' is already declared", varId);
+        return String.format("%s %s", type.toString(), varId);
     }
+
+    public IType getType() { return type; }
+
+    public String getVarId() { return varId; }
 }

@@ -1,5 +1,5 @@
 package api.model.expressions;
-import api.MyException;
+import api.model.exceptions.MyException;
 import api.model.collections.IDictionary;
 import api.model.values.IValue;
 
