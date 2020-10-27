@@ -7,14 +7,17 @@ import api.model.statements.IStatement;
 import api.model.values.IValue;
 
 public class ProgramState {
-    IStack<IStatement>          executionStack;
-    IDictionary<String, IValue> symbolTable;
-    IList<IValue>               outputList;
+    private final IStack<IStatement>          executionStack;
+    private final IDictionary<String, IValue> symbolTable;
+    private final IList<IValue>               outputList;
+    private final IStatement                  originalStatement;
 
-    public ProgramState(IStack<IStatement> executionStack, IDictionary<String, IValue> symbolTable, IList<IValue> outputList) {
-        this.executionStack = executionStack;
-        this.symbolTable    = symbolTable;
-        this.outputList     = outputList;
+    public ProgramState(IStack<IStatement> executionStack, IDictionary<String, IValue> symbolTable, IList<IValue> outputList, IStatement statement) {
+        this.executionStack    = executionStack;
+        this.symbolTable       = symbolTable;
+        this.outputList        = outputList;
+        this.originalStatement = statement.deepCopy();
+        executionStack.push(statement);
     }
 
     @Override
@@ -27,29 +30,11 @@ public class ProgramState {
 
     //region getters/setters
 
-    public IStack<IStatement> getExecutionStack() {
-        return executionStack;
-    }
+    public IStack<IStatement> getExecutionStack() { return executionStack; }
 
-    public void setExecutionStack(IStack<IStatement> executionStack) {
-        this.executionStack = executionStack;
-    }
+    public IDictionary<String, IValue> getSymbolTable() { return symbolTable; }
 
-    public IDictionary<String, IValue> getSymbolTable() {
-        return symbolTable;
-    }
-
-    public void setSymbolTable(IDictionary<String, IValue> symbolTable) {
-        this.symbolTable = symbolTable;
-    }
-
-    public IList<IValue> getOutputList() {
-        return outputList;
-    }
-
-    public void setOutputList(IList<IValue> outputList) {
-        this.outputList = outputList;
-    }
+    public IList<IValue> getOutputList() { return outputList; }
 
     //endregion
 }

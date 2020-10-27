@@ -21,8 +21,14 @@ public class CompoundStatement implements IStatement{
     }
 
     @Override
+    public IStatement deepCopy() {
+        return new NullStatement();
+        // TODO - Implement deep copy
+    }
+
+    @Override
     public String toString() {
-        return String.format("%s;\n%s;", lhs, rhs);
+        return String.format("(%s; %s)", lhs, rhs);
     }
 
     public IStatement getLhs() { return lhs; }

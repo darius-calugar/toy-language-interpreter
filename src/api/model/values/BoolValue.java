@@ -1,5 +1,6 @@
 package api.model.values;
 
+import api.model.types.BoolType;
 import api.model.types.IType;
 
 public class BoolValue implements IValue {
@@ -15,7 +16,7 @@ public class BoolValue implements IValue {
 
     @Override
     public IType getType() {
-        return null;
+        return new BoolType();
     }
 
     @Override

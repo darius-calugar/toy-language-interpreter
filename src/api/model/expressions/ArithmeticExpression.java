@@ -5,7 +5,7 @@ import api.model.exceptions.InvalidTypeException;
 import api.model.types.IType;
 import api.model.types.IntType;
 import api.model.values.IValue;
-import api.model.values.Integer;
+import api.model.values.IntValue;
 
 public class ArithmeticExpression implements IExpression {
     IExpression         lhs;
@@ -32,16 +32,16 @@ public class ArithmeticExpression implements IExpression {
             throw new InvalidTypeException(expectedType, lValue.getType());
 
         // Fetch raw values of inner expression
-        var lRawValue = ((Integer) lValue).getRawValue();
-        var rRawValue = ((Integer) rValue).getRawValue();
+        var lRawValue = ((IntValue) lValue).getRawValue();
+        var rRawValue = ((IntValue) rValue).getRawValue();
 
         // Apply appropriate operation
         return switch (operation) {
-            case add -> new Integer(lRawValue + rRawValue);
-            case subtract -> new Integer(lRawValue - rRawValue);
-            case multiply -> new Integer(lRawValue * rRawValue);
-            case divide -> new Integer(lRawValue / rRawValue);
-            case mod -> new Integer(lRawValue % rRawValue);
+            case add -> new IntValue(lRawValue + rRawValue);
+            case subtract -> new IntValue(lRawValue - rRawValue);
+            case multiply -> new IntValue(lRawValue * rRawValue);
+            case divide -> new IntValue(lRawValue / rRawValue);
+            case mod -> new IntValue(lRawValue % rRawValue);
         };
     }
 

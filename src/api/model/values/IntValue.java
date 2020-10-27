@@ -1,11 +1,12 @@
 package api.model.values;
 
 import api.model.types.IType;
+import api.model.types.IntType;
 
-public class Integer implements IValue {
+public class IntValue implements IValue {
     int integer;
 
-    public Integer(int integer) {
+    public IntValue(int integer) {
         this.integer = integer;
     }
 
@@ -15,7 +16,7 @@ public class Integer implements IValue {
 
     @Override
     public IType getType() {
-        return null;
+        return new IntType();
     }
 
     @Override

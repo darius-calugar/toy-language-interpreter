@@ -7,30 +7,35 @@ import api.repository.IRepository;
 
 public class Controller {
     ProgramState state;
-    IRepository repository;
-    boolean     displayOnStepFlag;
+    IRepository  repository;
+    boolean      displayOnStepFlag;
 
     public Controller(IRepository repository) {
         this.repository = repository;
-        this.state = repository.currentProgramState();
+        this.state      = repository.currentProgramState();
     }
 
     // region Functionalities
     public ProgramState oneStep() {
         var stack = state.getExecutionStack();
-        if (stack.peek() != null) {
-            var statement = stack.pop();
-            statement.execute(state);
-        }
+        if (stack.isEmpty())
+            throw new OutOfBoundsException("Execution stack is empty");
 
-        if (displayOnStepFlag) {
+        var statement = stack.pop();
+        statement.execute(state);
+        if (displayOnStepFlag)
             System.out.println(state.toString());
-        }
         return state;
     }
 
     public ProgramState allStep() {
-        // TODO - Implement
+        var stack = state.getExecutionStack();
+        while (!stack.isEmpty()) {
+            var statement = stack.pop();
+            statement.execute(state);
+            if (displayOnStepFlag)
+                System.out.println(state.toString());
+        }
         return state;
     }
     // endregion
@@ -45,7 +50,7 @@ public class Controller {
         return repository;
     }
 
-    public boolean isDisplayOnStepFlag() {
+    public boolean getDisplayOnStepFlag() {
         return displayOnStepFlag;
     }
 

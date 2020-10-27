@@ -32,6 +32,12 @@ public class AssignStatement implements IStatement {
     }
 
     @Override
+    public IStatement deepCopy() {
+        return new NullStatement();
+        // TODO - Implement deep copy
+    }
+
+    @Override
     public String toString() {
         return String.format("%s=%s", varId, expression);
     }

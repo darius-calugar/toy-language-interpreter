@@ -18,8 +18,14 @@ public class DeclareStatement implements IStatement {
         var symbolTable = state.getSymbolTable();
         if (symbolTable.isDefined(varId))
             throw new MultipleDefinitionException(varId);
-        symbolTable.set(varId, null);
+        symbolTable.set(varId, type.defaultValue());
         return state;
+    }
+
+    @Override
+    public IStatement deepCopy() {
+        return new NullStatement();
+        // TODO - Implement deep copy
     }
 
     @Override
