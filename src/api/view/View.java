@@ -61,11 +61,9 @@ public class View {
         if (stepByStep) {
             boolean executing = true;
             while (!controller.isEmpty() && executing) {
-                controller.oneStep();
                 System.out.print("Continue? (Y/N)");
                 switch (getInput()) {
-                    case "y", "Y" -> {
-                    }
+                    case "y", "Y" -> controller.oneStep();
                     case "n", "N" -> executing = false;
                 }
             }
