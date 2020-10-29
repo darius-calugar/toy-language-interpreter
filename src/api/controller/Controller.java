@@ -11,7 +11,7 @@ public class Controller {
 
     public Controller(IRepository repository) {
         this.repository = repository;
-        this.state      = repository.currentProgramState();
+        this.state = repository.currentProgramState();
     }
 
     // region Functionalities
@@ -23,7 +23,7 @@ public class Controller {
         var statement = stack.pop();
         statement.execute(state);
         if (displayOnStepFlag)
-            System.out.println(state.toString());
+            display();
         return state;
     }
 
@@ -33,8 +33,17 @@ public class Controller {
             var statement = stack.pop();
             statement.execute(state);
             if (displayOnStepFlag)
-                System.out.println(state.toString());
+                display();
         }
+    }
+
+    public void display() {
+        System.out.println(state.toString());
+    }
+
+    public void selectProgram(int index) {
+        repository.selectProgramState(index);
+        this.state = repository.currentProgramState();
     }
     // endregion
 
@@ -53,6 +62,10 @@ public class Controller {
 
     public void setDisplayOnStepFlag(boolean displayOnStepFlag) {
         this.displayOnStepFlag = displayOnStepFlag;
+    }
+
+    public boolean isEmpty() {
+        return state.getExecutionStack().isEmpty();
     }
     // endregion
 }

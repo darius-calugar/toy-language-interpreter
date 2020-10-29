@@ -4,7 +4,7 @@ import api.model.exceptions.OutOfBoundsException;
 
 import java.util.HashMap;
 
-public class Dictionary<K,T> implements IDictionary<K,T> {
+public class DictionaryJavaMap<K,T> implements IDictionary<K,T> {
     java.util.Map<K,T> dictionary = new HashMap<K,T>();
 
     @Override

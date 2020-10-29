@@ -24,8 +24,7 @@ public class DeclareStatement implements IStatement {
 
     @Override
     public IStatement deepCopy() {
-        return new NullStatement();
-        // TODO - Implement deep copy
+        return new DeclareStatement(varId, type);
     }
 
     @Override

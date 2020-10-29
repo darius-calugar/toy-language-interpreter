@@ -22,7 +22,7 @@ public class ProgramState {
 
     @Override
     public String toString() {
-        return "================ STATE ================\n" +
+        return "===================== STATE =====================\n" +
                "Execution Stack:\n" + executionStack + "\n\n" +
                "Symbol Table:\n" + symbolTable + "\n\n" +
                "Output List:\n" + outputList + "\n\n";

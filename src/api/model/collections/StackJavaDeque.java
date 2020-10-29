@@ -4,7 +4,7 @@ import api.model.exceptions.OutOfBoundsException;
 
 import java.util.LinkedList;
 
-public class Stack<T> implements IStack<T> {
+public class StackJavaDeque<T> implements IStack<T> {
     private final java.util.Deque<T> stack = new LinkedList<T>();
 
     @Override

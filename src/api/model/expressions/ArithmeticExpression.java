@@ -1,6 +1,7 @@
 package api.model.expressions;
 
 import api.model.collections.IDictionary;
+import api.model.exceptions.DivisionByZeroException;
 import api.model.exceptions.InvalidTypeException;
 import api.model.types.IType;
 import api.model.types.IntType;
@@ -19,7 +20,7 @@ public class ArithmeticExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable) throws InvalidTypeException {
+    public IValue evaluate(IDictionary<String, IValue> symTable) throws InvalidTypeException, DivisionByZeroException {
         // Fetch values of inner expression
         IType expectedType = new IntType();
         var   lValue       = lhs.evaluate(symTable);
@@ -34,6 +35,10 @@ public class ArithmeticExpression implements IExpression {
         // Fetch raw values of inner expression
         var lRawValue = ((IntValue) lValue).getRawValue();
         var rRawValue = ((IntValue) rValue).getRawValue();
+
+        // Check for invalid operation scenarios
+        if ((operation == ArithmeticOperation.divide || operation == ArithmeticOperation.mod) && rRawValue == 0)
+            throw new DivisionByZeroException(this);
 
         // Apply appropriate operation
         return switch (operation) {

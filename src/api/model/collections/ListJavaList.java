@@ -2,10 +2,10 @@ package api.model.collections;
 
 import api.model.exceptions.OutOfBoundsException;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-public class List<T> implements IList<T> {
-    java.util.List<T> list = new LinkedList<T>();
+public class ListJavaList<T> implements IList<T> {
+    java.util.List<T> list = new ArrayList<T>();
 
     @Override
     public void push(T value) {
