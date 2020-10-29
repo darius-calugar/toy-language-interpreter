@@ -7,6 +7,10 @@ import api.model.types.IType;
 import api.model.values.BoolValue;
 import api.model.values.IValue;
 
+/**
+ Expression that evaluates a logic operation on 2 sub-expressions.
+ @see LogicOperation
+ */
 public class LogicExpression implements IExpression {
     IExpression    lhs;
     IExpression    rhs;

@@ -6,6 +6,11 @@ import api.model.expressions.IExpression;
 import api.model.types.BoolType;
 import api.model.values.BoolValue;
 
+/**
+ Statement that executes a sub-statement based on the truth-value of a condition expression.
+ @see IExpression IExpression
+ @see api.model.values.IValue IValue
+ */
 public class IfStatement implements IStatement {
     IExpression condition;
     IStatement  lhs;
@@ -20,13 +25,13 @@ public class IfStatement implements IStatement {
     @Override
     public ProgramState execute(ProgramState state) throws InvalidTypeException {
         var executionStack = state.getExecutionStack();
-        var symbolTable = state.getSymbolTable();
+        var symbolTable    = state.getSymbolTable();
 
         var value = condition.evaluate(symbolTable);
         if (!value.getType().equals(new BoolType()))
             throw new InvalidTypeException(new BoolType(), value.getType());
 
-        if (((BoolValue)value).getRawValue())
+        if (((BoolValue) value).getRawValue())
             executionStack.push(lhs);
         else
             executionStack.push(rhs);

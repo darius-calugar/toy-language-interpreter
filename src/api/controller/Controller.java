@@ -4,18 +4,23 @@ import api.model.ProgramState;
 import api.model.exceptions.OutOfBoundsException;
 import api.repository.IRepository;
 
+/**
+ Interpreter controller.
+ */
 public class Controller {
-    ProgramState state;
-    IRepository  repository;
-    boolean      displayOnStepFlag;
+    IRepository repository;
+    boolean     displayOnStepFlag;
 
     public Controller(IRepository repository) {
         this.repository = repository;
-        this.state = repository.currentProgramState();
     }
 
-    // region Functionalities
+    /**
+     Execute one step of the current program state.
+     @return Reference to the updated program state
+     */
     public ProgramState oneStep() {
+        var state = repository.currentProgramState();
         var stack = state.getExecutionStack();
         if (stack.isEmpty())
             throw new OutOfBoundsException("Execution stack is empty");
@@ -27,7 +32,11 @@ public class Controller {
         return state;
     }
 
+    /**
+     Execute all steps of the current program state.
+     */
     public void allStep() {
+        var state = repository.currentProgramState();
         var stack = state.getExecutionStack();
         while (!stack.isEmpty()) {
             var statement = stack.pop();
@@ -37,19 +46,24 @@ public class Controller {
         }
     }
 
+    /**
+     Display the state data to the output stream.
+     */
     public void display() {
-        System.out.println(state.toString());
+        System.out.println(repository.currentProgramState().toString());
     }
 
+    /**
+     Select a program on a certain position from the repository.
+     @param index Position in the repository
+     */
     public void selectProgram(int index) {
         repository.selectProgramState(index);
-        this.state = repository.currentProgramState();
     }
-    // endregion
 
     // region Getters/Setters
     public ProgramState getState() {
-        return state;
+        return getRepository().currentProgramState();
     }
 
     public IRepository getRepository() {
@@ -65,7 +79,7 @@ public class Controller {
     }
 
     public boolean isEmpty() {
-        return state.getExecutionStack().isEmpty();
+        return getRepository().currentProgramState().getExecutionStack().isEmpty();
     }
     // endregion
 }

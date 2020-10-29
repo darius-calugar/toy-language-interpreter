@@ -3,6 +3,10 @@ package api.model.types;
 import api.model.values.IValue;
 import api.model.values.IntValue;
 
+/**
+ Signed Integer type supported by the interpreter.
+ Default value is always 0
+ */
 public class IntType implements IType {
     @Override
     public IValue defaultValue() {

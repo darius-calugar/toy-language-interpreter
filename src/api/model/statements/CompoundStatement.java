@@ -1,9 +1,11 @@
 package api.model.statements;
 
-import api.model.exceptions.MyException;
 import api.model.ProgramState;
 
-public class CompoundStatement implements IStatement{
+/**
+ Statement that executes 2 sub-statements in left-to-right order.
+ */
+public class CompoundStatement implements IStatement {
     IStatement lhs;
     IStatement rhs;
 
@@ -13,7 +15,7 @@ public class CompoundStatement implements IStatement{
     }
 
     @Override
-    public ProgramState execute(ProgramState state) throws MyException {
+    public ProgramState execute(ProgramState state) {
         var stack = state.getExecutionStack();
         stack.push(rhs);
         stack.push(lhs);

@@ -4,6 +4,11 @@ import api.model.exceptions.MultipleDefinitionException;
 import api.model.ProgramState;
 import api.model.types.IType;
 
+/**
+ Statement that defines a variable id to the state's symbol table and associate's it with the default value of it's type.
+ @see api.model.values.IValue IValue
+ @see IType IType
+ */
 public class DeclareStatement implements IStatement {
     String varId;
     IType  type;
@@ -32,7 +37,7 @@ public class DeclareStatement implements IStatement {
         return String.format("%s %s", type.toString(), varId);
     }
 
-    public IType getType() { return type; }
+    public IType getType()   { return type; }
 
     public String getVarId() { return varId; }
 }

@@ -3,6 +3,10 @@ package api.model.values;
 import api.model.types.BoolType;
 import api.model.types.IType;
 
+/**
+ Boolean value.
+ @see BoolType
+ */
 public class BoolValue implements IValue {
     boolean bool;
 
@@ -10,6 +14,9 @@ public class BoolValue implements IValue {
         this.bool = bool;
     }
 
+    /**
+     @return Raw java value
+     */
     public boolean getRawValue() {
         return bool;
     }

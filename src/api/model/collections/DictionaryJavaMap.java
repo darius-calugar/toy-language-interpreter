@@ -25,7 +25,9 @@ public class DictionaryJavaMap<K,T> implements IDictionary<K,T> {
     }
 
     @Override
-    public T get(K key) {
+    public T get(K key) throws OutOfBoundsException {
+        if (!dictionary.containsKey(key))
+            throw new OutOfBoundsException("Could not find the specified key in the dictionary");
         return dictionary.get(key);
     }
 

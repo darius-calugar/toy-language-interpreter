@@ -1,5 +1,8 @@
 package api.model.exceptions;
 
+/**
+ Base class for excteptions used by the interpreter.
+ */
 public class MyException extends RuntimeException {
     String message;
 

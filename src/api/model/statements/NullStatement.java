@@ -3,6 +3,9 @@ package api.model.statements;
 import api.model.exceptions.MyException;
 import api.model.ProgramState;
 
+/**
+ Dummy statement that executes an empty method.
+ */
 public class NullStatement implements IStatement {
 
     @Override

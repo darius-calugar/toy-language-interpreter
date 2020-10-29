@@ -4,6 +4,9 @@ import api.model.collections.IDictionary;
 import api.model.exceptions.UndefinedVariableException;
 import api.model.values.IValue;
 
+/**
+ Expression that evaluates the value of a variable defined inside the symbol table of the program
+ */
 public class VariableExpression implements IExpression {
     private final String varId;
 

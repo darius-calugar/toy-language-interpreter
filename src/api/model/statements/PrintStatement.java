@@ -4,6 +4,11 @@ import api.model.exceptions.MyException;
 import api.model.ProgramState;
 import api.model.expressions.IExpression;
 
+/**
+ Statement that adds the value of an expression to the program's output list.
+ @see api.model.values.IValue IValue
+ @see IExpression IExpression
+ */
 public class PrintStatement implements IStatement {
     IExpression expression;
 

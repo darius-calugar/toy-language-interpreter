@@ -6,6 +6,11 @@ import api.model.collections.IStack;
 import api.model.statements.IStatement;
 import api.model.values.IValue;
 
+/**
+ Represents a program instance.
+ Stores data  about the execution stack, the symbol table, and the output list.
+ Keeps an instance to the original, unmodified statement assigned on creation.
+ */
 public class ProgramState {
     private final IStack<IStatement>          executionStack;
     private final IDictionary<String, IValue> symbolTable;
@@ -29,12 +34,12 @@ public class ProgramState {
     }
 
     //region getters/setters
-
     public IStack<IStatement> getExecutionStack() { return executionStack; }
 
     public IDictionary<String, IValue> getSymbolTable() { return symbolTable; }
 
-    public IList<IValue> getOutputList() { return outputList; }
+    public IList<IValue> getOutputList()                { return outputList; }
 
+    public IStatement getOriginalStatement()            { return originalStatement;}
     //endregion
 }

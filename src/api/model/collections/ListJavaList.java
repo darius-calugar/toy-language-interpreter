@@ -32,6 +32,11 @@ public class ListJavaList<T> implements IList<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return list.isEmpty();
+    }
+
+    @Override
     public String toString() {
         var stringBuilder = new StringBuilder();
         var shouldAddComma = false;

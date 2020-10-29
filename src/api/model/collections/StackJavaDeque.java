@@ -13,15 +13,22 @@ public class StackJavaDeque<T> implements IStack<T> {
     }
 
     @Override
-    public T pop() {
+    public T pop() throws OutOfBoundsException {
         if (stack.isEmpty())
             throw new OutOfBoundsException("Stack is empty");
         return stack.pop();
     }
 
     @Override
-    public T peek() {
+    public T peek() throws OutOfBoundsException {
+        if (stack.isEmpty())
+            throw new OutOfBoundsException("Stack is empty");
         return stack.peek();
+    }
+
+    @Override
+    public int size() {
+        return stack.size();
     }
 
     @Override

@@ -5,6 +5,10 @@ import api.model.collections.IList;
 import api.model.collections.ListJavaList;
 import api.model.exceptions.OutOfBoundsException;
 
+/**
+ List implementation of the program repository.
+ @see IList
+ */
 public class ListRepository implements IRepository {
     IList<ProgramState> stateList;
     int                 currentProgramStateIndex;

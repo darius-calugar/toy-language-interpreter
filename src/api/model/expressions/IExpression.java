@@ -1,8 +1,20 @@
 package api.model.expressions;
-import api.model.exceptions.MyException;
+
 import api.model.collections.IDictionary;
+import api.model.exceptions.MyException;
 import api.model.values.IValue;
 
+/**
+ Interface for evaluable expressions
+ */
 public interface IExpression {
-    IValue evaluate(IDictionary<String,IValue> symTable) throws MyException;
+    /**
+     Evaluates the value of the expression accordingly.
+
+     @param symTable Reference to the symbol table of the program state
+     @return evaluated value of the expression
+     @throws api.model.exceptions.MyException Fatal exception encountered when evaluating the expression.
+     @see api.model.ProgramState ProgramState
+     */
+    IValue evaluate(IDictionary<String, IValue> symTable) throws MyException;
 }

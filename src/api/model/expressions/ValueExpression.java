@@ -3,6 +3,9 @@ package api.model.expressions;
 import api.model.collections.IDictionary;
 import api.model.values.IValue;
 
+/**
+ Expression that returns a constant value.
+ */
 public class ValueExpression implements IExpression {
     private final IValue value;
 
@@ -20,7 +23,5 @@ public class ValueExpression implements IExpression {
         return value.toString();
     }
 
-    // region Getters/Setters
     public IValue getValue() { return value; }
-    // endregion
 }

@@ -8,6 +8,10 @@ import api.model.types.IntType;
 import api.model.values.IValue;
 import api.model.values.IntValue;
 
+/**
+ Expression that computes an arithmetic operation of 2 sub-expressions.
+ @see ArithmeticOperation
+ */
 public class ArithmeticExpression implements IExpression {
     IExpression         lhs;
     IExpression         rhs;
