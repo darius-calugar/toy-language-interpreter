@@ -13,9 +13,9 @@ import api.model.values.IntValue;
  @see ArithmeticOperation
  */
 public class ArithmeticExpression implements IExpression {
-    IExpression         lhs;
-    IExpression         rhs;
-    ArithmeticOperation operation;
+    private final IExpression         lhs;
+    private final IExpression         rhs;
+    private final ArithmeticOperation operation;
 
     public ArithmeticExpression(IExpression lhs, IExpression rhs, ArithmeticOperation operation) {
         this.lhs       = lhs;
@@ -63,5 +63,17 @@ public class ArithmeticExpression implements IExpression {
             case divide -> String.format("%s/%s",lhs, rhs);
             case mod -> String.format("%s%%%s",lhs, rhs);
         };
+    }
+
+    public IExpression getLhs() {
+        return lhs;
+    }
+
+    public IExpression getRhs() {
+        return rhs;
+    }
+
+    public ArithmeticOperation getOperation() {
+        return operation;
     }
 }

@@ -9,19 +9,18 @@ import api.model.values.IValue;
 
 /**
  Expression that evaluates a logic operation on 2 sub-expressions.
- @see LogicOperation
- */
+
+ @see LogicOperation */
 public class LogicExpression implements IExpression {
-    IExpression    lhs;
-    IExpression    rhs;
-    LogicOperation operation;
+    private final IExpression    lhs;
+    private final IExpression    rhs;
+    private final LogicOperation operation;
 
     public LogicExpression(IExpression lhs, IExpression rhs, LogicOperation operation) {
         this.lhs       = lhs;
         this.rhs       = rhs;
         this.operation = operation;
     }
-
 
     @Override
     public IValue evaluate(IDictionary<String, IValue> symTable) throws InvalidTypeException {
@@ -54,12 +53,24 @@ public class LogicExpression implements IExpression {
     @Override
     public String toString() {
         return switch (operation) {
-            case and -> String.format("%s&&%s",lhs, rhs);
-            case or -> String.format("%s||%s",lhs, rhs);
-            case xor -> String.format("%s^^%s",lhs, rhs);
-            case nand -> String.format("%s!&%s",lhs, rhs);
-            case nor -> String.format("%s!|%s",lhs, rhs);
-            case nxor -> String.format("%s!^%s",lhs, rhs);
+            case and -> String.format("%s&&%s", lhs, rhs);
+            case or -> String.format("%s||%s", lhs, rhs);
+            case xor -> String.format("%s^^%s", lhs, rhs);
+            case nand -> String.format("%s!&%s", lhs, rhs);
+            case nor -> String.format("%s!|%s", lhs, rhs);
+            case nxor -> String.format("%s!^%s", lhs, rhs);
         };
+    }
+
+    public IExpression getLhs() {
+        return lhs;
+    }
+
+    public IExpression getRhs() {
+        return rhs;
+    }
+
+    public LogicOperation getOperation() {
+        return operation;
     }
 }
