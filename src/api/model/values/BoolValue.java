@@ -8,10 +8,12 @@ import api.model.types.IType;
  @see BoolType
  */
 public class BoolValue implements IValue {
-    boolean bool;
+    private final boolean bool;
+    private final IType type;
 
     public BoolValue(boolean bool) {
         this.bool = bool;
+        this.type = new BoolType();
     }
 
     /**
@@ -23,7 +25,7 @@ public class BoolValue implements IValue {
 
     @Override
     public IType getType() {
-        return new BoolType();
+        return type;
     }
 
     @Override

@@ -8,10 +8,12 @@ import api.model.types.IntType;
  @see IntType
  */
 public class IntValue implements IValue {
-    int integer;
+    private final int integer;
+    private final IType type;
 
     public IntValue(int integer) {
         this.integer = integer;
+        this.type = new IntType();
     }
 
     /**
@@ -23,7 +25,7 @@ public class IntValue implements IValue {
 
     @Override
     public IType getType() {
-        return new IntType();
+        return type;
     }
 
     @Override

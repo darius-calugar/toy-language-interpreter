@@ -1,16 +1,15 @@
 package api.model.types;
 
-import api.model.values.BoolValue;
 import api.model.values.IValue;
+import api.model.values.StringValue;
 
 /**
- Boolean type supported by the interpreter.
- Default value is always false.
+ String type supported by the interpreter. Default value is the empty string.
  */
-public class BoolType implements IType {
+public class StringType implements IType{
     @Override
     public IValue defaultValue() {
-        return new BoolValue(false);
+        return new StringValue("");
     }
 
     @Override
@@ -20,6 +19,6 @@ public class BoolType implements IType {
 
     @Override
     public String toString() {
-        return "bool";
+        return "str";
     }
 }
