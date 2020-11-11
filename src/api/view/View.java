@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
  Console ui view of the interpreter.
  Keeps a reference to the controller.
  */
+@Deprecated
 public class View {
     Controller controller;
     boolean    running;
