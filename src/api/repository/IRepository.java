@@ -1,7 +1,7 @@
 package api.repository;
 
 import api.model.ProgramState;
-import api.model.exceptions.OutOfBoundsException;
+import api.model.exceptions.MyException;
 
 /**
  Repository interface for the interpreter
@@ -13,16 +13,7 @@ public interface IRepository {
     ProgramState currentProgramState();
 
     /**
-     Select a program stored at a certain position.
-
-     @param index Program's repository index
-     @throws OutOfBoundsException Index is out of repository bounds
+     Append the contents of the program state to a file in log format.
      */
-    void selectProgramState(int index) throws OutOfBoundsException;
-
-    /**
-     Add a new program state at the end of the repository.
-     @param programState New program
-     */
-    void addProgramState(ProgramState programState);
+    void logCurrentProgramState() throws MyException;
 }

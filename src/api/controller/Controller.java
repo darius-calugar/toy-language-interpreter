@@ -17,18 +17,15 @@ public class Controller {
 
     /**
      Execute one step of the current program state.
+
      @return Reference to the updated program state
      */
-    public ProgramState oneStep() {
-        var state = repository.currentProgramState();
+    public ProgramState oneStep(ProgramState state) {
         var stack = state.getExecutionStack();
         if (stack.isEmpty())
             throw new OutOfBoundsException("Execution stack is empty");
-
         var statement = stack.pop();
         statement.execute(state);
-        if (displayOnStepFlag)
-            display();
         return state;
     }
 
@@ -38,11 +35,10 @@ public class Controller {
     public void allStep() {
         var state = repository.currentProgramState();
         var stack = state.getExecutionStack();
+        repository.logCurrentProgramState();
         while (!stack.isEmpty()) {
-            var statement = stack.pop();
-            statement.execute(state);
-            if (displayOnStepFlag)
-                display();
+            oneStep(state);
+            repository.logCurrentProgramState();
         }
     }
 
@@ -51,14 +47,6 @@ public class Controller {
      */
     public void display() {
         System.out.println(repository.currentProgramState().toString());
-    }
-
-    /**
-     Select a program on a certain position from the repository.
-     @param index Position in the repository
-     */
-    public void selectProgram(int index) {
-        repository.selectProgramState(index);
     }
 
     // region Getters/Setters

@@ -16,7 +16,7 @@ import api.model.types.BoolType;
 import api.model.types.IntType;
 import api.model.values.BoolValue;
 import api.model.values.IntValue;
-import api.repository.ListRepository;
+import api.repository.Repository;
 import api.view.TextMenu;
 
 public class App {
@@ -27,8 +27,7 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 example1());
-        var repository1 = new ListRepository();
-        repository1.addProgramState(programState1);
+        var repository1 = new Repository(programState1, "logs\\log1.txt");
         var controller1 = new Controller(repository1);
 
         // Example 2 Controller
@@ -37,8 +36,7 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 example2());
-        var repository2 = new ListRepository();
-        repository2.addProgramState(programState2);
+        var repository2 = new Repository(programState2, "logs\\log2.txt");
         var controller2 = new Controller(repository2);
 
         // Example 3 Controller
@@ -47,8 +45,7 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 example3());
-        var repository3 = new ListRepository();
-        repository3.addProgramState(programState3);
+        var repository3 = new Repository(programState3, "logs\\log3.txt");
         var controller3 = new Controller(repository3);
 
         var textMenu = new TextMenu();
