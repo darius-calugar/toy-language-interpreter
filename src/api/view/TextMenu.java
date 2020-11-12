@@ -29,10 +29,10 @@ public class TextMenu {
      Automatically prints each stored command.
      */
     public void printMenu() {
-        for (var command : commands.values()) {
-            System.out.print("\u001b[107m \u001b[0m");
-            System.out.printf("%2s - %s%n", command.getKey(), command.getDescription());
-        }
+        commands.values().stream()
+                .map(command -> "\u001b[107m \u001b[0m " + command.getKey() + " : " + command.getDescription())
+                .sorted()
+                .forEach(System.out::println);
     }
 
     /**
@@ -51,8 +51,7 @@ public class TextMenu {
             if (command != null) {
                 command.execute();
             } else {
-                System.out.print("\u001b[41m \u001b[0m ");
-                System.out.print("\u001b[31m");
+                System.out.print("\u001b[41m \u001b[0m \u001b[31m");
                 System.out.println("Invalid command!\u001b[0m");
             }
             System.out.println();

@@ -5,6 +5,10 @@ import api.model.collections.IList;
 import api.model.collections.IStack;
 import api.model.statements.IStatement;
 import api.model.values.IValue;
+import api.model.values.StringValue;
+
+import java.io.BufferedReader;
+import java.io.File;
 
 /**
  Represents a program instance.
@@ -12,15 +16,21 @@ import api.model.values.IValue;
  Keeps an instance to the original, unmodified statement assigned on creation.
  */
 public class ProgramState {
-    private final IStack<IStatement>          executionStack;
-    private final IDictionary<String, IValue> symbolTable;
-    private final IList<IValue>               outputList;
-    private final IStatement                  originalStatement;
+    private final IStack<IStatement>                       executionStack;
+    private final IDictionary<String, IValue>              symbolTable;
+    private final IList<IValue>                            outputList;
+    private final IStatement                               originalStatement;
+    private final IDictionary<StringValue, BufferedReader> fileTable;
 
-    public ProgramState(IStack<IStatement> executionStack, IDictionary<String, IValue> symbolTable, IList<IValue> outputList, IStatement statement) {
+    public ProgramState(IStack<IStatement> executionStack,
+                        IDictionary<String, IValue> symbolTable,
+                        IList<IValue> outputList,
+                        IDictionary<StringValue, BufferedReader> fileTable,
+                        IStatement statement) {
         this.executionStack    = executionStack;
         this.symbolTable       = symbolTable;
         this.outputList        = outputList;
+        this.fileTable         = fileTable;
         this.originalStatement = statement.deepCopy();
         executionStack.push(statement);
     }
@@ -33,13 +43,13 @@ public class ProgramState {
                "Output List:\n" + outputList + "\n\n";
     }
 
-    //region getters/setters
-    public IStack<IStatement> getExecutionStack() { return executionStack; }
+    public IStack<IStatement> getExecutionStack()                  { return executionStack; }
 
-    public IDictionary<String, IValue> getSymbolTable() { return symbolTable; }
+    public IDictionary<String, IValue> getSymbolTable()            { return symbolTable; }
 
-    public IList<IValue> getOutputList()                { return outputList; }
+    public IList<IValue> getOutputList()                           { return outputList; }
 
-    public IStatement getOriginalStatement()            { return originalStatement;}
-    //endregion
+    public IDictionary<StringValue, BufferedReader> getFileTable() { return fileTable; }
+
+    public IStatement getOriginalStatement()                       { return originalStatement;}
 }

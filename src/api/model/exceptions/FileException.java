@@ -8,6 +8,10 @@ public class FileException extends MyException {
         super("Error when trying to operate on the file \"" + filePath + "\": " + innerException.getMessage());
     }
 
+    public FileException(String filePath, String message) {
+        super("Error when trying to operate on the file \"" + filePath + "\": " + message);
+    }
+
     public FileException(String filePath) {
         super("Error when trying to operate on the file \"" + filePath + "\".");
     }
