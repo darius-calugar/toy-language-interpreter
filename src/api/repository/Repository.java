@@ -32,16 +32,16 @@ public class Repository implements IRepository {
     public void logCurrentProgramState() throws MyException {
         try {
             var log = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)));
-            log.println("# LOG " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-            // TODO - Pretty printing
-            log.println("Execution Stack:");
+            log.println("---- LOG " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            log.println("- Execution Stack:");
             log.println(state.getExecutionStack().toString());
-            log.println("Symbol Table:");
+            log.println("- Symbol Table:");
             log.println(state.getSymbolTable().toString());
-            log.println("Output List:");
+            log.println("- Output List:");
             log.println(state.getOutputList().toString());
-            log.println("File Table:");
-            // TODO - log.println(state.getFileTable().toString());
+            log.println("- File Table:");
+            log.println(state.getFileTable().toString());
+            log.println();
             log.println();
             log.flush();
         } catch (IOException inner) {

@@ -3,17 +3,19 @@ package api.model.values;
 import api.model.types.IType;
 import api.model.types.StringType;
 
+import java.util.Objects;
+
 /**
  String value.
- @see StringType
- */
+
+ @see StringType */
 public class StringValue implements IValue {
     private final String string;
-    private final IType type;
+    private final IType  type;
 
     public StringValue(String string) {
         this.string = string;
-        this.type = new StringType();
+        this.type   = new StringType();
     }
 
     /**
@@ -30,6 +32,15 @@ public class StringValue implements IValue {
 
     @Override
     public String toString() {
-        return string;
+        return '\"' + string + '\"';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        var that = (StringValue) o;
+        return Objects.equals(string, that.string) &&
+               Objects.equals(type, that.type);
     }
 }

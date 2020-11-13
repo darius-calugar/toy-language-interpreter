@@ -3,6 +3,8 @@ package api.model.values;
 import api.model.types.IType;
 import api.model.types.IntType;
 
+import java.util.Objects;
+
 /**
  Signed integer value.
  @see IntType
@@ -31,5 +33,14 @@ public class IntValue implements IValue {
     @Override
     public String toString() {
         return String.format("%d", integer);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass())
+            return false;
+        var that = (IntValue) o;
+        return Objects.equals(integer, that.integer) &&
+               Objects.equals(type, that.type);
     }
 }
