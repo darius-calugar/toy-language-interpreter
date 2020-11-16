@@ -5,13 +5,10 @@ import api.model.ProgramState;
 import api.model.collections.DictionaryJavaMap;
 import api.model.collections.ListJavaList;
 import api.model.collections.StackJavaDeque;
+import api.model.expressions.*;
 import api.view.commands.ClearLogsCommand;
 import api.view.commands.ExitCommand;
 import api.view.commands.RunExampleCommand;
-import api.model.expressions.ArithmeticExpression;
-import api.model.expressions.ArithmeticOperation;
-import api.model.expressions.ValueExpression;
-import api.model.expressions.VariableExpression;
 import api.model.statements.*;
 import api.model.types.BoolType;
 import api.model.types.IntType;
@@ -21,6 +18,7 @@ import api.model.values.IntValue;
 import api.model.values.StringValue;
 import api.repository.Repository;
 import api.view.TextMenu;
+import com.sun.jdi.Value;
 
 public class App {
     static public void main(String[] args) {
@@ -64,12 +62,23 @@ public class App {
         var repository4 = new Repository(programState4, "logs\\log4.txt");
         var controller4 = new Controller(repository4);
 
+        // Example 5 Controller
+        var programState5 = new ProgramState(
+                new StackJavaDeque<>(),
+                new DictionaryJavaMap<>(),
+                new ListJavaList<>(),
+                new DictionaryJavaMap<>(),
+                example5());
+        var repository5 = new Repository(programState5, "logs\\log5.txt");
+        var controller5 = new Controller(repository5);
+
         var textMenu = new TextMenu();
         textMenu.addCommand(new ExitCommand("0", "Exit"));
         textMenu.addCommand(new RunExampleCommand("1", "Run example 1 (v0.1a)", controller1));
         textMenu.addCommand(new RunExampleCommand("2", "Run example 2 (v0.1a)", controller2));
         textMenu.addCommand(new RunExampleCommand("3", "Run example 3 (v0.1a)", controller3));
         textMenu.addCommand(new RunExampleCommand("4", "Run example 4 (v0.2a)", controller4));
+        textMenu.addCommand(new RunExampleCommand("5", "Run example 5 (v0.3a)", controller5));
         textMenu.addCommand(new ClearLogsCommand("c", "Clear logs", "logs", "(.*).txt"));
         textMenu.show();
     }
@@ -186,6 +195,34 @@ public class App {
                                                 )
                                         )
                                 )
+                        )
+                )
+        );
+    }
+
+    /**
+     int v;
+     <br/>v=4;
+     <br/>while (v>0) {
+     <br/>print(v);
+     <br/>v=v-1;
+     <br/>}
+     <br/>print(v);
+     */
+    static private IStatement example5() {
+        return new CompoundStatement(
+                new DeclareStatement("v", new IntType()),
+                new CompoundStatement(
+                        new AssignStatement("v", new ValueExpression(new IntValue(4))),
+                        new CompoundStatement(
+                                new WhileStatement(
+                                        new RelationalExpression(new VariableExpression("v"), new ValueExpression(new IntValue(0)), RelationalOperation.greater),
+                                        new CompoundStatement(
+                                                new PrintStatement(new VariableExpression("v")),
+                                                new AssignStatement("v", new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntValue(1)), ArithmeticOperation.subtract))
+                                        )
+                                ),
+                                new PrintStatement(new VariableExpression("v"))
                         )
                 )
         );
