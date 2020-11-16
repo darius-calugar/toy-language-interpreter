@@ -5,7 +5,7 @@ import api.model.exceptions.OutOfBoundsException;
 import java.util.ArrayList;
 
 public class ListJavaList<T> implements IList<T> {
-    java.util.List<T> list = new ArrayList<T>();
+    java.util.List<T> list = new ArrayList<>();
 
     @Override
     public void push(T value) {
@@ -39,15 +39,13 @@ public class ListJavaList<T> implements IList<T> {
     @Override
     public String toString() {
         var stringBuilder = new StringBuilder();
-        var shouldAddComma = false;
-        stringBuilder.append("[ ");
+        var shouldAddSeparator = false;
         for (var element: list) {
-            if (shouldAddComma)
-                stringBuilder.append(", ");
+            if (shouldAddSeparator)
+                stringBuilder.append("\n");
             stringBuilder.append(element.toString());
-            shouldAddComma = true;
+            shouldAddSeparator = true;
         }
-        stringBuilder.append(" ]");
         return stringBuilder.toString();
     }
 }

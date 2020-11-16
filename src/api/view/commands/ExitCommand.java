@@ -1,4 +1,4 @@
-package api.model.commands;
+package api.view.commands;
 
 /**
  Stops the interpreter process upon execution.

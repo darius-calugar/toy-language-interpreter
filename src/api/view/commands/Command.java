@@ -1,4 +1,4 @@
-package api.model.commands;
+package api.view.commands;
 
 /**
  Abstract base class for all user commands supported by the interpreter.

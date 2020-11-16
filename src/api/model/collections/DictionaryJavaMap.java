@@ -3,9 +3,11 @@ package api.model.collections;
 import api.model.exceptions.OutOfBoundsException;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Stream;
 
 public class DictionaryJavaMap<K,T> implements IDictionary<K,T> {
-    java.util.Map<K,T> dictionary = new HashMap<K,T>();
+    java.util.Map<K,T> dictionary = new HashMap<>();
 
     @Override
     public boolean isDefined(K key) {
@@ -32,10 +34,22 @@ public class DictionaryJavaMap<K,T> implements IDictionary<K,T> {
     }
 
     @Override
+    public Stream<K> getKeys() {
+        return dictionary.keySet().stream();
+    }
+
+    @Override
+    public Stream<T> getValues() {
+        return dictionary.values().stream();
+    }
+
+    @Override
     public String toString() {
         var result = new StringBuilder();
         for (var entry: dictionary.entrySet()) {
-            result.append(entry.toString());
+            result.append(entry.getKey().toString());
+            result.append(" -> ");
+            result.append(entry.getValue().toString());
             result.append('\n');
         }
         if (result.length() > 0)

@@ -1,6 +1,6 @@
 package api.view;
 
-import api.model.commands.Command;
+import api.view.commands.Command;
 
 import java.util.HashMap;
 import java.util.Map;
