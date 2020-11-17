@@ -21,8 +21,11 @@ public class WhileStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
+        var symbolTable = state.getSymbolTable();
+        var heap        = state.getHeap();
+
         // Cast expression value to bool
-        var value = expression.evaluate(state.getSymbolTable());
+        var value = expression.evaluate(symbolTable, heap);
         if (!value.getType().equals(new BoolType()))
             throw new InvalidTypeException(new BoolType(), value.getType());
         var boolValue = (BoolValue) value;
@@ -38,7 +41,7 @@ public class WhileStatement implements IStatement {
 
     @Override
     public IStatement deepCopy() {
-        return new WhileStatement(expression, statement);
+        return new WhileStatement(expression, statement.deepCopy());
     }
 
     @Override

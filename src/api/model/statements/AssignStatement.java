@@ -7,9 +7,9 @@ import api.model.expressions.IExpression;
 
 /**
  Statement that assigns a value to a variable id inside the program's symbol table.
+
  @see IExpression IExpression
- @see api.model.values.IValue IValue
- */
+ @see api.model.values.IValue IValue */
 public class AssignStatement implements IStatement {
     String      varId;
     IExpression expression;
@@ -22,7 +22,8 @@ public class AssignStatement implements IStatement {
     @Override
     public ProgramState execute(ProgramState state) throws UndefinedVariableException, InvalidTypeException {
         var symbolTable = state.getSymbolTable();
-        var value       = expression.evaluate(symbolTable);
+        var heap        = state.getHeap();
+        var value       = expression.evaluate(symbolTable, heap);
 
         if (!symbolTable.isDefined(varId))
             throw new UndefinedVariableException(varId);

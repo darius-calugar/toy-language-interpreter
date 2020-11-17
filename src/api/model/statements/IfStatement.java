@@ -8,9 +8,9 @@ import api.model.values.BoolValue;
 
 /**
  Statement that executes a sub-statement based on the truth-value of a condition expression.
+
  @see IExpression IExpression
- @see api.model.values.IValue IValue
- */
+ @see api.model.values.IValue IValue */
 public class IfStatement implements IStatement {
     IExpression condition;
     IStatement  lhs;
@@ -26,8 +26,9 @@ public class IfStatement implements IStatement {
     public ProgramState execute(ProgramState state) throws InvalidTypeException {
         var executionStack = state.getExecutionStack();
         var symbolTable    = state.getSymbolTable();
+        var heap           = state.getHeap();
 
-        var value = condition.evaluate(symbolTable);
+        var value = condition.evaluate(symbolTable, heap);
         if (!value.getType().equals(new BoolType()))
             throw new InvalidTypeException(new BoolType(), value.getType());
 

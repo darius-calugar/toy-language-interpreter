@@ -3,7 +3,6 @@ package api.model.collections;
 import api.model.exceptions.OutOfBoundsException;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.stream.Stream;
 
 public class DictionaryJavaMap<K,T> implements IDictionary<K,T> {

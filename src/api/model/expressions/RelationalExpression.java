@@ -1,6 +1,7 @@
 package api.model.expressions;
 
 import api.model.collections.IDictionary;
+import api.model.collections.IHeap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
 import api.model.types.IType;
@@ -25,10 +26,10 @@ public class RelationalExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable) throws MyException {
+    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
         IType expectedType = new IntType();
-        var   lValue       = lhs.evaluate(symTable);
-        var   rValue       = rhs.evaluate(symTable);
+        var   lValue       = lhs.evaluate(symTable, heap);
+        var   rValue       = rhs.evaluate(symTable, heap);
 
         // Check expression value types
         if (!lValue.getType().equals(expectedType))

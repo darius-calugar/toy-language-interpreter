@@ -1,6 +1,7 @@
 package api.model.expressions;
 
 import api.model.collections.IDictionary;
+import api.model.collections.IHeap;
 import api.model.exceptions.MyException;
 import api.model.values.IValue;
 
@@ -16,5 +17,5 @@ public interface IExpression {
      @throws api.model.exceptions.MyException Fatal exception encountered when evaluating the expression.
      @see api.model.ProgramState ProgramState
      */
-    IValue evaluate(IDictionary<String, IValue> symTable) throws MyException;
+    IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws MyException;
 }

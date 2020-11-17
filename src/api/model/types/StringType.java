@@ -14,7 +14,7 @@ public class StringType implements IType{
 
     @Override
     public boolean equals(Object obj) {
-        return getClass() == obj.getClass();
+        return obj instanceof StringType;
     }
 
     @Override

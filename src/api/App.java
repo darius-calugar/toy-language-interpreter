@@ -3,6 +3,7 @@ package api;
 import api.controller.Controller;
 import api.model.ProgramState;
 import api.model.collections.DictionaryJavaMap;
+import api.model.collections.Heap;
 import api.model.collections.ListJavaList;
 import api.model.collections.StackJavaDeque;
 import api.model.expressions.*;
@@ -18,7 +19,6 @@ import api.model.values.IntValue;
 import api.model.values.StringValue;
 import api.repository.Repository;
 import api.view.TextMenu;
-import com.sun.jdi.Value;
 
 public class App {
     static public void main(String[] args) {
@@ -28,7 +28,8 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 new DictionaryJavaMap<>(),
-                example1());
+                new Heap(),
+                BuiltInExamples.EXAMPLE1.getStatementTree());
         var repository1 = new Repository(programState1, "logs\\log1.txt");
         var controller1 = new Controller(repository1);
 
@@ -38,7 +39,8 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 new DictionaryJavaMap<>(),
-                example2());
+                new Heap(),
+                BuiltInExamples.EXAMPLE2.getStatementTree());
         var repository2 = new Repository(programState2, "logs\\log2.txt");
         var controller2 = new Controller(repository2);
 
@@ -48,7 +50,8 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 new DictionaryJavaMap<>(),
-                example3());
+                new Heap(),
+                BuiltInExamples.EXAMPLE3.getStatementTree());
         var repository3 = new Repository(programState3, "logs\\log3.txt");
         var controller3 = new Controller(repository3);
 
@@ -58,7 +61,8 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 new DictionaryJavaMap<>(),
-                example4());
+                new Heap(),
+                BuiltInExamples.EXAMPLE4.getStatementTree());
         var repository4 = new Repository(programState4, "logs\\log4.txt");
         var controller4 = new Controller(repository4);
 
@@ -68,9 +72,32 @@ public class App {
                 new DictionaryJavaMap<>(),
                 new ListJavaList<>(),
                 new DictionaryJavaMap<>(),
-                example5());
+                new Heap(),
+                BuiltInExamples.EXAMPLE5.getStatementTree());
         var repository5 = new Repository(programState5, "logs\\log5.txt");
         var controller5 = new Controller(repository5);
+
+        // Example 5 Controller
+        var programState6 = new ProgramState(
+                new StackJavaDeque<>(),
+                new DictionaryJavaMap<>(),
+                new ListJavaList<>(),
+                new DictionaryJavaMap<>(),
+                new Heap(),
+                BuiltInExamples.EXAMPLE6.getStatementTree());
+        var repository6 = new Repository(programState6, "logs\\log6.txt");
+        var controller6 = new Controller(repository6);
+
+        // Example 5 Controller
+        var programState7 = new ProgramState(
+                new StackJavaDeque<>(),
+                new DictionaryJavaMap<>(),
+                new ListJavaList<>(),
+                new DictionaryJavaMap<>(),
+                new Heap(),
+                BuiltInExamples.EXAMPLE7.getStatementTree());
+        var repository7 = new Repository(programState7, "logs\\log7.txt");
+        var controller7 = new Controller(repository7);
 
         var textMenu = new TextMenu();
         textMenu.addCommand(new ExitCommand("0", "Exit"));
@@ -79,152 +106,9 @@ public class App {
         textMenu.addCommand(new RunExampleCommand("3", "Run example 3 (v0.1a)", controller3));
         textMenu.addCommand(new RunExampleCommand("4", "Run example 4 (v0.2a)", controller4));
         textMenu.addCommand(new RunExampleCommand("5", "Run example 5 (v0.3a)", controller5));
+        textMenu.addCommand(new RunExampleCommand("6", "Run example 6 (v0.3a)", controller6));
+        textMenu.addCommand(new RunExampleCommand("7", "Run example 7 (v0.3a)", controller7));
         textMenu.addCommand(new ClearLogsCommand("c", "Clear logs", "logs", "(.*).txt"));
         textMenu.show();
-    }
-
-    /**
-     int v;
-     <br/>v = 2;
-     <br/>print(v);
-     */
-    static private IStatement example1() {
-        return new CompoundStatement(
-                new DeclareStatement("v", new IntType()),
-                new CompoundStatement(
-                        new AssignStatement("v", new ValueExpression(new IntValue(2))),
-                        new PrintStatement(new VariableExpression("v"))
-                )
-        );
-    }
-
-    /**
-     int a;
-     <br/>int b;
-     <br/>a = 2 + 3 * 5;
-     <br/>b = a + 1;
-     <br/>print(b);
-     */
-    static private IStatement example2() {
-        return new CompoundStatement(
-                new DeclareStatement("a", new IntType()),
-                new CompoundStatement(
-                        new DeclareStatement("b", new IntType()),
-                        new CompoundStatement(
-                                new AssignStatement("a", new ArithmeticExpression(
-                                        new ValueExpression(new IntValue(2)),
-                                        new ArithmeticExpression(
-                                                new ValueExpression(new IntValue(3)),
-                                                new ValueExpression(new IntValue(5)),
-                                                ArithmeticOperation.multiply
-                                        ),
-                                        ArithmeticOperation.add
-                                )),
-                                new CompoundStatement(
-                                        new AssignStatement("b", new ArithmeticExpression(
-                                                new VariableExpression("a"),
-                                                new ValueExpression(new IntValue(1)),
-                                                ArithmeticOperation.add
-                                        )),
-                                        new PrintStatement(new VariableExpression("b"))
-                                )
-                        )
-                )
-        );
-    }
-
-    /**
-     bool a;
-     <br/>int v;
-     <br/>a=true;
-     <br/>if(a) v = 2;
-     <br/>else  v = 3;
-     <br/>print(v);
-     */
-    static private IStatement example3() {
-        return new CompoundStatement(
-                new DeclareStatement("a", new BoolType()),
-                new CompoundStatement(
-                        new DeclareStatement("v", new IntType()),
-                        new CompoundStatement(
-                                new AssignStatement("a", new ValueExpression(new BoolValue(true))),
-                                new CompoundStatement(
-                                        new IfStatement(new VariableExpression("a"),
-                                                new AssignStatement("v", new ValueExpression(new IntValue(2))),
-                                                new AssignStatement("v", new ValueExpression(new IntValue(3)))
-                                        ),
-                                        new PrintStatement(new VariableExpression("v"))
-                                )
-                        )
-                )
-        );
-    }
-
-
-    /**
-     string varf;
-     <br/>varf="test.in";
-     <br/>openRFile(varf);
-     <br/>int varc;
-     <br/>readFile(varf,varc);
-     <br/>print(varc);
-     <br/>readFile(varf,varc);
-     <br/>print(varc);
-     <br/>closeRFile(varf)
-     */
-    static private IStatement example4() {
-        return new CompoundStatement(
-                new DeclareStatement("varf", new StringType()),
-                new CompoundStatement(
-                        new AssignStatement("varf", new ValueExpression(new StringValue("resources\\test.in"))),
-                        new CompoundStatement(
-                                new OpenReadFileStatement(new VariableExpression("varf")),
-                                new CompoundStatement(
-                                        new DeclareStatement("varc", new IntType()),
-                                        new CompoundStatement(
-                                                new ReadFileStatement(new VariableExpression("varf"), "varc"),
-                                                new CompoundStatement(
-                                                        new PrintStatement(new VariableExpression("varc")),
-                                                        new CompoundStatement(
-                                                                new ReadFileStatement(new VariableExpression("varf"), "varc"),
-                                                                new CompoundStatement(
-                                                                        new PrintStatement(new VariableExpression("varc")),
-                                                                        new CloseReadFileStatement(new VariableExpression("varf"))
-                                                                )
-                                                        )
-                                                )
-                                        )
-                                )
-                        )
-                )
-        );
-    }
-
-    /**
-     int v;
-     <br/>v=4;
-     <br/>while (v>0) {
-     <br/>print(v);
-     <br/>v=v-1;
-     <br/>}
-     <br/>print(v);
-     */
-    static private IStatement example5() {
-        return new CompoundStatement(
-                new DeclareStatement("v", new IntType()),
-                new CompoundStatement(
-                        new AssignStatement("v", new ValueExpression(new IntValue(4))),
-                        new CompoundStatement(
-                                new WhileStatement(
-                                        new RelationalExpression(new VariableExpression("v"), new ValueExpression(new IntValue(0)), RelationalOperation.greater),
-                                        new CompoundStatement(
-                                                new PrintStatement(new VariableExpression("v")),
-                                                new AssignStatement("v", new ArithmeticExpression(new VariableExpression("v"), new ValueExpression(new IntValue(1)), ArithmeticOperation.subtract))
-                                        )
-                                ),
-                                new PrintStatement(new VariableExpression("v"))
-                        )
-                )
-        );
     }
 }

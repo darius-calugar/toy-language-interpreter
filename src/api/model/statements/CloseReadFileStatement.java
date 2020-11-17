@@ -19,8 +19,11 @@ public class CloseReadFileStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
+        var symTable = state.getSymbolTable();
+        var heap     = state.getHeap();
+
         // Cast expression value to string
-        var value = expression.evaluate(state.getSymbolTable());
+        var value = expression.evaluate(symTable, heap);
         if (!value.getType().equals(new StringType()))
             throw new InvalidTypeException(new StringType(), value.getType());
         var stringValue = (StringValue) value;

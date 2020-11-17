@@ -23,7 +23,8 @@ public class ReadFileStatement implements IStatement {
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
         var symbolTable = state.getSymbolTable();
-        var value       = expression.evaluate(symbolTable);
+        var heap        = state.getHeap();
+        var value       = expression.evaluate(symbolTable, heap);
 
         // Check if the variable is defined
         if (!symbolTable.isDefined(varId))

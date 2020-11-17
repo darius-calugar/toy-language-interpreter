@@ -46,6 +46,8 @@ public class Repository implements IRepository {
             log.println(state.getFileTable().getKeys()
                     .map(StringValue::toString)
                     .collect(Collectors.joining("\n")));
+            log.println("- Heap:");
+            log.println(state.getHeap().toString());
             log.println();
             log.println();
             log.flush();

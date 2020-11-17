@@ -15,7 +15,7 @@ public class IntType implements IType {
 
     @Override
     public boolean equals(Object obj) {
-        return getClass() == obj.getClass();
+        return obj instanceof IntType;
     }
 
     @Override

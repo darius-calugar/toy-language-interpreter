@@ -21,7 +21,10 @@ public class OpenReadFileStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
-        var value = expression.evaluate(state.getSymbolTable());
+        var symbolTable = state.getSymbolTable();
+        var heap        = state.getHeap();
+
+        var value = expression.evaluate(symbolTable, heap);
 
         // Cast to appropriate value type
         if (!value.getType().equals(new StringType()))

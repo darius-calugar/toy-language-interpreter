@@ -18,7 +18,10 @@ public class PrintStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
-        state.getOutputList().push(expression.evaluate(state.getSymbolTable()));
+        var symbolTable = state.getSymbolTable();
+        var heap        = state.getHeap();
+
+        state.getOutputList().push(expression.evaluate(symbolTable, heap));
         return state;
     }
 
