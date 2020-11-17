@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Heap implements IHeap {
-    private final Map<Integer, IValue> map             = new HashMap<>();
-    private       int                  nextFreeAddress = 1;
+    private Map<Integer, IValue> map             = new HashMap<>();
+    private int                  nextFreeAddress = 1;
 
     @Override
     public boolean isDefined(Integer address) {
@@ -18,7 +18,7 @@ public class Heap implements IHeap {
     }
 
     @Override
-    public int allocate(IValue value) throws HeapFullException{
+    public int allocate(IValue value) throws HeapFullException {
         map.put(ComputeNextFreeAddress(), value);
         return nextFreeAddress;
     }
@@ -54,9 +54,19 @@ public class Heap implements IHeap {
         return value;
     }
 
+    @Override
+    public void setContent(Map<Integer, IValue> content) {
+        map = content;
+    }
+
+    @Override
+    public Map<Integer, IValue> getContent() {
+        return map;
+    }
+
     private int ComputeNextFreeAddress() throws HeapFullException {
         // TODO - Test this
-        var lastPotentialAddress = nextFreeAddress > 1 ? nextFreeAddress-1 : Integer.MAX_VALUE;
+        var lastPotentialAddress = nextFreeAddress > 1 ? nextFreeAddress - 1 : Integer.MAX_VALUE;
         while (map.containsKey(nextFreeAddress)) {
             nextFreeAddress = nextFreeAddress < Integer.MAX_VALUE ? nextFreeAddress + 1 : 1;
             if (lastPotentialAddress == nextFreeAddress)
@@ -68,7 +78,7 @@ public class Heap implements IHeap {
     @Override
     public String toString() {
         var result = new StringBuilder();
-        for (var entry: map.entrySet()) {
+        for (var entry : map.entrySet()) {
             result.append(entry.getKey().toString());
             result.append(" -> ");
             result.append(entry.getValue().toString());

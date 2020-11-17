@@ -13,17 +13,17 @@ import java.io.BufferedReader;
  Keeps an instance to the original, unmodified statement assigned on creation.
  */
 public class ProgramState {
-    private final IStack<IStatement>                       executionStack;
-    private final IDictionary<String, IValue>              symbolTable;
-    private final IList<IValue>                            outputList;
-    private final IStatement                               originalStatement;
-    private final IDictionary<StringValue, BufferedReader> fileTable;
-    private final IHeap                                    heap;
+    private final IStack<IStatement>                executionStack;
+    private final IMap<String, IValue>              symbolTable;
+    private final IList<IValue>                     outputList;
+    private final IStatement                        originalStatement;
+    private final IMap<StringValue, BufferedReader> fileTable;
+    private final IHeap                             heap;
 
     public ProgramState(IStack<IStatement> executionStack,
-                        IDictionary<String, IValue> symbolTable,
+                        IMap<String, IValue> symbolTable,
                         IList<IValue> outputList,
-                        IDictionary<StringValue, BufferedReader> fileTable,
+                        IMap<StringValue, BufferedReader> fileTable,
                         IHeap heap,
                         IStatement statement) {
         this.executionStack    = executionStack;
@@ -46,11 +46,11 @@ public class ProgramState {
 
     public IStack<IStatement> getExecutionStack()                  { return executionStack; }
 
-    public IDictionary<String, IValue> getSymbolTable()            { return symbolTable; }
+    public IMap<String, IValue> getSymbolTable()            { return symbolTable; }
 
     public IList<IValue> getOutputList()                           { return outputList; }
 
-    public IDictionary<StringValue, BufferedReader> getFileTable() { return fileTable; }
+    public IMap<StringValue, BufferedReader> getFileTable() { return fileTable; }
 
     public IHeap getHeap()                                         { return heap; }
 

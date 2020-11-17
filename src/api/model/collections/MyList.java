@@ -3,9 +3,10 @@ package api.model.collections;
 import api.model.exceptions.OutOfBoundsException;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ListJavaList<T> implements IList<T> {
-    java.util.List<T> list = new ArrayList<>();
+public class MyList<T> implements IList<T> {
+    private java.util.List<T> list = new ArrayList<>();
 
     @Override
     public void push(T value) {
@@ -27,6 +28,11 @@ public class ListJavaList<T> implements IList<T> {
     }
 
     @Override
+    public boolean contains(T value) {
+        return list.contains(value);
+    }
+
+    @Override
     public int size() {
         return list.size();
     }
@@ -34,6 +40,16 @@ public class ListJavaList<T> implements IList<T> {
     @Override
     public boolean isEmpty() {
         return list.isEmpty();
+    }
+
+    @Override
+    public void setContent(List<T> content) {
+        list = content;
+    }
+
+    @Override
+    public List<T> getContent() {
+        return list;
     }
 
     @Override

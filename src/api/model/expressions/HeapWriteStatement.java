@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.ExpectedRefTypeException;
 import api.model.exceptions.InvalidTypeException;
@@ -14,7 +14,7 @@ public class HeapWriteStatement implements IExpression {
     IExpression expression;
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws MyException {
         // Cast variable type to ref type
         var varValue = symTable.get(varId);
         if (!(varValue instanceof RefValue))

@@ -2,6 +2,8 @@ package api.model.collections;
 
 import api.model.exceptions.OutOfBoundsException;
 
+import java.util.List;
+
 public interface IList<T> {
     /**
      Add an entry at the end of the list.
@@ -27,6 +29,8 @@ public interface IList<T> {
      */
     T get(int index) throws OutOfBoundsException;
 
+    boolean contains(T value);
+
     /**
      @return Number of stored entries
      */
@@ -36,4 +40,8 @@ public interface IList<T> {
      @return Whether the list is empty
      */
     boolean isEmpty();
+
+    void setContent(List<T> content);
+
+    List<T> getContent();
 }

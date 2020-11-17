@@ -3,49 +3,60 @@ package api.model.collections;
 import api.model.exceptions.OutOfBoundsException;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
-public class DictionaryJavaMap<K,T> implements IDictionary<K,T> {
-    java.util.Map<K,T> dictionary = new HashMap<>();
+public class MyMap<K,T> implements IMap<K,T> {
+    private java.util.Map<K,T> map = new HashMap<>();
 
     @Override
     public boolean isDefined(K key) {
-        return dictionary.containsKey(key);
+        return map.containsKey(key);
     }
 
     @Override
     public void set(K key, T value) {
-        dictionary.put(key, value);
+        map.put(key, value);
     }
 
     @Override
     public T remove(K key) throws OutOfBoundsException {
-        if (!dictionary.containsKey(key))
+        if (!map.containsKey(key))
             throw new OutOfBoundsException("Could not find the specified key in the dictionary");
-        return dictionary.remove(key);
+        return map.remove(key);
     }
 
     @Override
     public T get(K key) throws OutOfBoundsException {
-        if (!dictionary.containsKey(key))
+        if (!map.containsKey(key))
             throw new OutOfBoundsException("Could not find the specified key in the dictionary");
-        return dictionary.get(key);
+        return map.get(key);
+    }
+
+    @Override
+    public void setContent(Map<K, T> content) {
+        map = content;
+    }
+
+    @Override
+    public Map<K, T> getContent() {
+        return map;
     }
 
     @Override
     public Stream<K> getKeys() {
-        return dictionary.keySet().stream();
+        return map.keySet().stream();
     }
 
     @Override
     public Stream<T> getValues() {
-        return dictionary.values().stream();
+        return map.values().stream();
     }
 
     @Override
     public String toString() {
         var result = new StringBuilder();
-        for (var entry: dictionary.entrySet()) {
+        for (var entry: map.entrySet()) {
             result.append(entry.getKey().toString());
             result.append(" -> ");
             result.append(entry.getValue().toString());

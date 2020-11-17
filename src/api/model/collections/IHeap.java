@@ -5,6 +5,8 @@ import api.model.exceptions.IllegalHeapAccess;
 import api.model.exceptions.OutOfBoundsException;
 import api.model.values.IValue;
 
+import java.util.Map;
+
 public interface IHeap {
 
     /**
@@ -41,4 +43,8 @@ public interface IHeap {
      @return value stored at the given address.
      */
     IValue get(Integer address) throws OutOfBoundsException, IllegalHeapAccess;
+
+    void setContent(Map<Integer, IValue> content);
+
+    Map<Integer, IValue> getContent();
 }

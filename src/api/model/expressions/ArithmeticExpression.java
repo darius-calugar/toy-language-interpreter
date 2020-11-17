@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.DivisionByZeroException;
 import api.model.exceptions.InvalidTypeException;
@@ -25,7 +25,7 @@ public class ArithmeticExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws InvalidTypeException, DivisionByZeroException {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws InvalidTypeException, DivisionByZeroException {
         // Fetch values of inner expression
         IType expectedType = new IntType();
         var   lValue       = lhs.evaluate(symTable, heap);

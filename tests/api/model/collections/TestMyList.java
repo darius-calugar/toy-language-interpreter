@@ -2,8 +2,8 @@ package api.model.collections;
 
 import org.junit.jupiter.api.Test;
 
-public class TestListJavaList {
-    private final IList<Integer> list = new ListJavaList<Integer>();
+public class TestMyList {
+    private final IList<Integer> list = new MyList<>();
 
     @Test
     void testPush_newEntry_entryPushed() {

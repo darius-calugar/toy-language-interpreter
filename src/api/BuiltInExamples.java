@@ -158,6 +158,23 @@ public enum BuiltInExamples {
                     new ValueExpression(new IntValue(5)),
                     ArithmeticOperation.add
             ))
+    }),
+
+    /**
+     Ref int v;
+     <br\>new(v,20);
+     <br\>Ref Ref int a;
+     <br\>new(a,v);
+     <br\>new(v,30);
+     <br\>print(rH(rH(a)))
+     */
+    EXAMPLE8(new IStatement[]{
+            new DeclareStatement("v", new RefType(new IntType())),
+            new HeapAllocateStatement("v", new ValueExpression(new IntValue(20))),
+            new DeclareStatement("a", new RefType(new RefType(new IntType()))),
+            new HeapAllocateStatement("a", new VariableExpression("v")),
+            new HeapAllocateStatement("v", new ValueExpression(new IntValue(30))),
+            new PrintStatement(new HeapReadExpression(new HeapReadExpression(new VariableExpression("a")))),
     });
 
     private final IStatement[] statements;

@@ -2,14 +2,20 @@ package api.controller;
 
 import api.model.ProgramState;
 import api.model.exceptions.OutOfBoundsException;
+import api.model.values.IValue;
+import api.model.values.RefValue;
 import api.repository.IRepository;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  Interpreter controller.
  */
 public class Controller {
     IRepository repository;
-    boolean     displayOnStepFlag;
 
     public Controller(IRepository repository) {
         this.repository = repository;
@@ -39,17 +45,39 @@ public class Controller {
         while (!stack.isEmpty()) {
             oneStep(state);
             repository.logCurrentProgramState();
+            state.getHeap().setContent(safeGarbageCollector(
+                    getAddresses(state.getSymbolTable().getContent().values()),
+                    state.getHeap().getContent()
+            ));
+            repository.logCurrentProgramState();
         }
     }
 
-    /**
-     Display the state data to the output stream.
-     */
-    public void display() {
-        System.out.println(repository.currentProgramState().toString());
+    Map<Integer, IValue> safeGarbageCollector(List<Integer> addresses, Map<Integer, IValue> heap) {
+        return heap.entrySet().stream()
+                .filter(e -> addresses.contains(e.getKey()) ||
+                             heap.values().stream()
+                                     .filter(v -> v instanceof RefValue)
+                                     .anyMatch(v -> ((RefValue) v).getAddress() == e.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    // region Getters/Setters
+    Map<Integer, IValue> unsafeGarbageCollector(List<Integer> addresses, Map<Integer, IValue> heap) {
+        return heap.entrySet().stream()
+                .filter(e -> addresses.contains(e.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    List<Integer> getAddresses(Collection<IValue> symTableValues) {
+        return symTableValues.stream()
+                .filter(v -> v instanceof RefValue)
+                .map(v -> {
+                    RefValue v1 = (RefValue) v;
+                    return v1.getAddress();
+                })
+                .collect(Collectors.toList());
+    }
+
     public ProgramState getState() {
         return getRepository().currentProgramState();
     }
@@ -57,17 +85,4 @@ public class Controller {
     public IRepository getRepository() {
         return repository;
     }
-
-    public boolean getDisplayOnStepFlag() {
-        return displayOnStepFlag;
-    }
-
-    public void setDisplayOnStepFlag(boolean displayOnStepFlag) {
-        this.displayOnStepFlag = displayOnStepFlag;
-    }
-
-    public boolean isEmpty() {
-        return getRepository().currentProgramState().getExecutionStack().isEmpty();
-    }
-    // endregion
 }

@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.values.IValue;
 
@@ -15,7 +15,7 @@ public class ValueExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) {
         return value;
     }
 

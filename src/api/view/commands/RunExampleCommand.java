@@ -17,7 +17,6 @@ public class RunExampleCommand extends Command {
     @Override
     public void execute() {
         try {
-            controller.setDisplayOnStepFlag(true);
             controller.allStep();
         } catch (MyException exception) {
             System.out.println("\u001b[41m \u001b[0m \u001b[31m ERROR: " + exception.getMessage() + "\u001b[0m");

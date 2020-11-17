@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.UndefinedVariableException;
 import api.model.values.IValue;
@@ -16,7 +16,7 @@ public class VariableExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws UndefinedVariableException {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws UndefinedVariableException {
         if (!symTable.isDefined(varId))
             throw new UndefinedVariableException(varId);
         return symTable.get(varId);

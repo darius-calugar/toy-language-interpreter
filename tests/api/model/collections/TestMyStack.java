@@ -2,8 +2,8 @@ package api.model.collections;
 
 import org.junit.jupiter.api.Test;
 
-public class TestStackJavaDeque {
-    IStack<Integer> stack = new StackJavaDeque<>();
+public class TestMyStack {
+    IStack<Integer> stack = new MyStack<>();
 
     @Test
     void testPush_newEntry_entryPushed() {

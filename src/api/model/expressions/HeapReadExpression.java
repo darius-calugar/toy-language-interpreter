@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.ExpectedRefTypeException;
 import api.model.exceptions.MyException;
@@ -15,7 +15,7 @@ public class HeapReadExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws MyException {
         var value = expression.evaluate(symTable, heap);
         if (!(value instanceof RefValue))
             throw new ExpectedRefTypeException(value.getType());

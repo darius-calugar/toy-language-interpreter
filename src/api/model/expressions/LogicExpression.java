@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.types.BoolType;
@@ -24,7 +24,7 @@ public class LogicExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws InvalidTypeException {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws InvalidTypeException {
         // Fetch values of inner expression
         IType expectedType = new BoolType();
         var   lValue       = lhs.evaluate(symTable, heap);

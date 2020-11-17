@@ -1,6 +1,6 @@
 package api.model.expressions;
 
-import api.model.collections.IDictionary;
+import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
@@ -26,7 +26,7 @@ public class RelationalExpression implements IExpression {
     }
 
     @Override
-    public IValue evaluate(IDictionary<String, IValue> symTable, IHeap heap) throws MyException {
+    public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws MyException {
         IType expectedType = new IntType();
         var   lValue       = lhs.evaluate(symTable, heap);
         var   rValue       = rhs.evaluate(symTable, heap);

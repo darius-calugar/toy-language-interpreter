@@ -2,9 +2,10 @@ package api.model.collections;
 
 import api.model.exceptions.OutOfBoundsException;
 
+import java.util.Map;
 import java.util.stream.Stream;
 
-public interface IDictionary<K, T> {
+public interface IMap<K, T> {
     /**
      Check if a key is defined inside the dictionary
 
@@ -37,6 +38,10 @@ public interface IDictionary<K, T> {
      @return value assigned to the key.
      */
     T get(K key) throws OutOfBoundsException;
+
+    void setContent(Map<K, T> content);
+
+    Map<K, T> getContent();
 
     Stream<K> getKeys();
 

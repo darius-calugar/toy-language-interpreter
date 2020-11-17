@@ -2,8 +2,8 @@ package api.model.collections;
 
 import org.junit.jupiter.api.Test;
 
-public class TestDictionaryJavaMap {
-    private final IDictionary<Integer, Integer> dictionary = new DictionaryJavaMap<Integer, Integer>();
+public class TestMyMap {
+    private final IMap<Integer, Integer> dictionary = new MyMap<>();
 
     @Test
     void testSetEntry_newEntry_entryIsSet() {
