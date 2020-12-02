@@ -17,3 +17,9 @@ Java-based interpreter for a custom programming language.
     - Program state file logging
 - Reworks:
     - New console UI system
+#### **23/11/2020** - `v0.3a`
+- Additions:
+    - Program heap storage
+    - Reference type
+    - Heap garbage collector
+    - While loop statement
