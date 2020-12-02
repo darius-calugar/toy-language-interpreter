@@ -33,7 +33,7 @@ public class AssignStatement implements IStatement {
             throw new InvalidTypeException(varType, value.getType());
 
         symbolTable.set(varId, value);
-        return state;
+        return null;
     }
 
     @Override

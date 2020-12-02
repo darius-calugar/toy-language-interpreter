@@ -41,7 +41,7 @@ public class CloseReadFileStatement implements IStatement {
         }
         state.getFileTable().remove(stringValue);
 
-        return state;
+        return null;
     }
 
     @Override

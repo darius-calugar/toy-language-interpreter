@@ -24,7 +24,7 @@ public class DeclareStatement implements IStatement {
         if (symbolTable.isDefined(varId))
             throw new MultipleDefinitionException(varId);
         symbolTable.set(varId, type.defaultValue());
-        return state;
+        return null;
     }
 
     @Override

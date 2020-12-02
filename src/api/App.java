@@ -20,8 +20,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE1.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE1.getStatementTree());
         var repository1 = new Repository(programState1, "logs\\log1.txt");
         var controller1 = new Controller(repository1);
 
@@ -31,8 +30,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE2.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE2.getStatementTree());
         var repository2 = new Repository(programState2, "logs\\log2.txt");
         var controller2 = new Controller(repository2);
 
@@ -42,8 +40,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE3.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE3.getStatementTree());
         var repository3 = new Repository(programState3, "logs\\log3.txt");
         var controller3 = new Controller(repository3);
 
@@ -53,8 +50,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE4.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE4.getStatementTree());
         var repository4 = new Repository(programState4, "logs\\log4.txt");
         var controller4 = new Controller(repository4);
 
@@ -64,8 +60,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE5.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE5.getStatementTree());
         var repository5 = new Repository(programState5, "logs\\log5.txt");
         var controller5 = new Controller(repository5);
 
@@ -75,8 +70,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE6.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE6.getStatementTree());
         var repository6 = new Repository(programState6, "logs\\log6.txt");
         var controller6 = new Controller(repository6);
 
@@ -86,8 +80,7 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE7.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE7.getStatementTree());
         var repository7 = new Repository(programState7, "logs\\log7.txt");
         var controller7 = new Controller(repository7);
 
@@ -97,10 +90,19 @@ public class App {
                 new MyMap<>(),
                 new MyList<>(),
                 new MyMap<>(),
-                new Heap(),
-                BuiltInExamples.EXAMPLE8.getStatementTree());
+                new Heap(), BuiltInExamples.EXAMPLE8.getStatementTree());
         var repository8 = new Repository(programState8, "logs\\log8.txt");
         var controller8 = new Controller(repository8);
+
+        // Example 9 Controller
+        var programState9 = new ProgramState(
+                new MyStack<>(),
+                new MyMap<>(),
+                new MyList<>(),
+                new MyMap<>(),
+                new Heap(), BuiltInExamples.EXAMPLE9.getStatementTree());
+        var repository9 = new Repository(programState9, "logs\\log9.txt");
+        var controller9 = new Controller(repository9);
 
         var textMenu = new TextMenu();
         textMenu.addCommand(new ExitCommand("0", "Exit"));
@@ -112,6 +114,7 @@ public class App {
         textMenu.addCommand(new RunExampleCommand("6", "Run example 6 (v0.3a)", controller6));
         textMenu.addCommand(new RunExampleCommand("7", "Run example 7 (v0.3a)", controller7));
         textMenu.addCommand(new RunExampleCommand("8", "Run example 8 (v0.3a)", controller8));
+        textMenu.addCommand(new RunExampleCommand("9", "Run example 9 (v0.4a)", controller9));
         textMenu.addCommand(new ClearLogsCommand("c", "Clear logs", "logs", "(.*).txt"));
         textMenu.show();
     }

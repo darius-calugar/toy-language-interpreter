@@ -36,7 +36,7 @@ public class IfStatement implements IStatement {
             executionStack.push(lhs);
         else
             executionStack.push(rhs);
-        return state;
+        return null;
     }
 
     @Override

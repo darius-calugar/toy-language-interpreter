@@ -1,11 +1,14 @@
 package api.model;
 
 import api.model.collections.*;
+import api.model.exceptions.MyException;
+import api.model.exceptions.OutOfBoundsException;
 import api.model.statements.IStatement;
 import api.model.values.IValue;
 import api.model.values.StringValue;
 
 import java.io.BufferedReader;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  Represents a program instance.
@@ -13,6 +16,9 @@ import java.io.BufferedReader;
  Keeps an instance to the original, unmodified statement assigned on creation.
  */
 public class ProgramState {
+    public static AtomicInteger nextFreeId = new AtomicInteger(1);
+
+    private final int                               id;
     private final IStack<IStatement>                executionStack;
     private final IMap<String, IValue>              symbolTable;
     private final IList<IValue>                     outputList;
@@ -26,6 +32,7 @@ public class ProgramState {
                         IMap<StringValue, BufferedReader> fileTable,
                         IHeap heap,
                         IStatement statement) {
+        this.id                = nextFreeId.getAndIncrement();
         this.executionStack    = executionStack;
         this.symbolTable       = symbolTable;
         this.outputList        = outputList;
@@ -35,24 +42,36 @@ public class ProgramState {
         executionStack.push(statement);
     }
 
-    @Override
-    public String toString() {
-        return "exeStack=[" + executionStack + "]," +
-               "symTable=[" + symbolTable + "], " +
-               "outList=[" + outputList + "], " +
-               "fileTable=[" + fileTable + "], " +
-               "heap=[" + heap + "]";
+    /**
+     Execute one step of the program state.
+
+     @return Reference to the updated program state
+     */
+    public ProgramState oneStep() throws MyException {
+        if (executionStack.isEmpty())
+            throw new OutOfBoundsException("Execution stack is empty");
+        var statement = executionStack.pop();
+        return statement.execute(this);
     }
 
-    public IStack<IStatement> getExecutionStack()                  { return executionStack; }
+    public Boolean isNotCompleted() { return !executionStack.isEmpty(); }
+
+    @Override
+    public String toString() {
+        return "ProgramState_" + id;
+    }
+
+    public int getId()                                      { return id; }
+
+    public IStack<IStatement> getExecutionStack()           { return executionStack; }
 
     public IMap<String, IValue> getSymbolTable()            { return symbolTable; }
 
-    public IList<IValue> getOutputList()                           { return outputList; }
+    public IList<IValue> getOutputList()                    { return outputList; }
 
     public IMap<StringValue, BufferedReader> getFileTable() { return fileTable; }
 
-    public IHeap getHeap()                                         { return heap; }
+    public IHeap getHeap()                                  { return heap; }
 
-    public IStatement getOriginalStatement()                       { return originalStatement;}
+    public IStatement getOriginalStatement()                { return originalStatement;}
 }

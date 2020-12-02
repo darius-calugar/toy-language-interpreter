@@ -22,7 +22,7 @@ public class PrintStatement implements IStatement {
         var heap        = state.getHeap();
 
         state.getOutputList().push(expression.evaluate(symbolTable, heap));
-        return state;
+        return null;
     }
 
     @Override

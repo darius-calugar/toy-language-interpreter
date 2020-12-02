@@ -10,8 +10,6 @@ import api.model.values.BoolValue;
 import api.model.values.IntValue;
 import api.model.values.StringValue;
 
-import java.beans.Expression;
-
 public enum BuiltInExamples {
     /**
      int v;
@@ -175,7 +173,23 @@ public enum BuiltInExamples {
             new HeapAllocateStatement("a", new VariableExpression("v")),
             new HeapAllocateStatement("v", new ValueExpression(new IntValue(30))),
             new PrintStatement(new HeapReadExpression(new HeapReadExpression(new VariableExpression("a")))),
-    });
+    }),
+
+    EXAMPLE9(new IStatement[]{
+            new DeclareStatement("v", new RefType(new IntType())),
+            new HeapAllocateStatement("v", new ValueExpression(new IntValue(20))),
+            new DeclareStatement("a", new RefType(new RefType(new IntType()))),
+            new HeapAllocateStatement("a", new VariableExpression("v")),
+            new ForkStatement(
+                    new CompoundStatement(
+                            new PrintStatement(new HeapReadExpression(new HeapReadExpression(new VariableExpression("a")))),
+                            new PrintStatement(new HeapReadExpression(new HeapReadExpression(new VariableExpression("a"))))
+                    )
+            ),
+            new HeapAllocateStatement("v", new ValueExpression(new IntValue(30))),
+            new PrintStatement(new HeapReadExpression(new HeapReadExpression(new VariableExpression("a")))),
+    }),
+    ;
 
     private final IStatement[] statements;
 

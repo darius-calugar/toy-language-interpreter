@@ -60,7 +60,7 @@ public class ReadFileStatement implements IStatement {
             throw new FileException(stringValue.getRawValue(), exception);
         }
 
-        return state;
+        return null;
     }
 
     @Override

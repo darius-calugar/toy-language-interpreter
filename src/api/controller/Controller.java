@@ -1,6 +1,7 @@
 package api.controller;
 
 import api.model.ProgramState;
+import api.model.exceptions.MyException;
 import api.model.exceptions.OutOfBoundsException;
 import api.model.values.IValue;
 import api.model.values.RefValue;
@@ -9,48 +10,71 @@ import api.repository.IRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 /**
  Interpreter controller.
  */
 public class Controller {
-    IRepository repository;
+    IRepository     repository;
+    ExecutorService executor;
 
     public Controller(IRepository repository) {
         this.repository = repository;
+        //this.executor = new Executors.
     }
 
-    /**
-     Execute one step of the current program state.
+    public void oneStep(List<ProgramState> states) {
+        states.forEach(repository::logProgramState);
+        var callables = states.stream()
+                .map(state -> (Callable<ProgramState>) (state::oneStep))
+                .collect(Collectors.toList());
 
-     @return Reference to the updated program state
-     */
-    public ProgramState oneStep(ProgramState state) {
-        var stack = state.getExecutionStack();
-        if (stack.isEmpty())
-            throw new OutOfBoundsException("Execution stack is empty");
-        var statement = stack.pop();
-        statement.execute(state);
-        return state;
+        try {
+            var newStates = executor.invokeAll(callables).stream()
+                    .map(future -> {
+                        try {
+                            return future.get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (MyException e) {
+                            // TODO - Handle exceptions
+                        }
+                        return null;
+                    })
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+            states.addAll(newStates);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        states.forEach(repository::logProgramState);
+        repository.setStates(states);
     }
 
     /**
      Execute all steps of the current program state.
      */
     public void allStep() {
-        var state = repository.currentProgramState();
-        var stack = state.getExecutionStack();
-        repository.logCurrentProgramState();
-        while (!stack.isEmpty()) {
-            oneStep(state);
-            repository.logCurrentProgramState();
-            state.getHeap().setContent(safeGarbageCollector(
-                    getAddresses(state.getSymbolTable().getContent().values()),
-                    state.getHeap().getContent()
-            ));
-            repository.logCurrentProgramState();
+        executor = Executors.newFixedThreadPool(2);
+        var states = removeCompletedPrograms(repository.getStates());
+        while (!states.isEmpty()) {
+            oneStep(states);
+            states = removeCompletedPrograms(repository.getStates());
         }
+        executor.shutdownNow();
+        repository.setStates(states);
+    }
+
+    List<ProgramState> removeCompletedPrograms(List<ProgramState> programStates) {
+        return programStates.stream()
+                .filter(ProgramState::isNotCompleted)
+                .collect(Collectors.toList());
     }
 
     Map<Integer, IValue> safeGarbageCollector(List<Integer> addresses, Map<Integer, IValue> heap) {
@@ -76,10 +100,6 @@ public class Controller {
                     return v1.getAddress();
                 })
                 .collect(Collectors.toList());
-    }
-
-    public ProgramState getState() {
-        return getRepository().currentProgramState();
     }
 
     public IRepository getRepository() {

@@ -39,8 +39,7 @@ public class HeapAllocateStatement implements IStatement {
 
         var address = heap.allocate(value);
         symbolTable.set(varId, new RefValue(address, (value.getType())));
-
-        return state;
+        return null;
     }
 
     @Override

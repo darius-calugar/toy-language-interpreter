@@ -11,31 +11,35 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  Implementation of the program repository.
  */
 public class Repository implements IRepository {
-    private final ProgramState state;
-    private final String       logFilePath;
+    private final List<ProgramState> states;
+    private final String             logFilePath;
 
-    public Repository(ProgramState state, String logFilePath) {
-        this.state       = state;
+    public Repository(ProgramState initialState, String logFilePath) {
+        this.states      = new ArrayList<>();
         this.logFilePath = logFilePath;
+        states.add(initialState);
+    }
+
+    public Repository(List<ProgramState> states, String logFilePath) {
+        this.states      = new ArrayList<>();
+        this.logFilePath = logFilePath;
+        this.states.addAll(states);
     }
 
     @Override
-    public ProgramState currentProgramState() {
-        return state;
-    }
-
-    @Override
-    public void logCurrentProgramState() throws MyException {
+    public void logProgramState(ProgramState state) throws MyException {
         try {
             var log = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)));
             // TODO - standardize collection conversions to string
-            log.println("---- LOG " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            log.println("---- LOG " + state.toString() + " " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
             log.println("- Execution Stack:");
             log.println(state.getExecutionStack().toString());
             log.println("- Symbol Table:");
@@ -55,5 +59,16 @@ public class Repository implements IRepository {
         } catch (IOException inner) {
             throw new FileException(logFilePath, inner);
         }
+    }
+
+    @Override
+    public List<ProgramState> getStates() {
+        return states;
+    }
+
+    @Override
+    public void setStates(List<ProgramState> states) {
+        this.states.clear();
+        this.states.addAll(states);
     }
 }
