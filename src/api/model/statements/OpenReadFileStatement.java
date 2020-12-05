@@ -1,5 +1,6 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.ProgramState;
 import api.model.exceptions.FileException;
 import api.model.exceptions.InvalidTypeException;
@@ -24,7 +25,9 @@ public class OpenReadFileStatement implements IStatement {
         var symbolTable = state.getSymbolTable();
         var heap        = state.getHeap();
 
+        Locks.heapLock.readLock().lock();
         var value = expression.evaluate(symbolTable, heap);
+        Locks.heapLock.readLock().unlock();
 
         // Cast to appropriate value type
         if (!value.getType().equals(new StringType()))

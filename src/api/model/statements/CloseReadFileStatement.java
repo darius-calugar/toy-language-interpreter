@@ -1,5 +1,6 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.ProgramState;
 import api.model.exceptions.FileException;
 import api.model.exceptions.InvalidTypeException;
@@ -9,6 +10,7 @@ import api.model.types.StringType;
 import api.model.values.StringValue;
 
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
 
 public class CloseReadFileStatement implements IStatement {
     IExpression expression;
@@ -19,16 +21,17 @@ public class CloseReadFileStatement implements IStatement {
 
     @Override
     public ProgramState execute(ProgramState state) throws MyException {
-        var symTable = state.getSymbolTable();
-        var heap     = state.getHeap();
+        Locks.heapLock.writeLock().lock();
+        var value = expression.evaluate(state.getSymbolTable(), state.getHeap());
+        Locks.heapLock.writeLock().unlock();
 
         // Cast expression value to string
-        var value = expression.evaluate(symTable, heap);
         if (!value.getType().equals(new StringType()))
             throw new InvalidTypeException(new StringType(), value.getType());
         var stringValue = (StringValue) value;
 
         // Check if file is open
+        Locks.fileTableLock.writeLock().lock();
         if (!state.getFileTable().isDefined(stringValue))
             throw new FileException(stringValue.getRawValue(), "File is not open");
         var file = state.getFileTable().get(stringValue);
@@ -40,6 +43,7 @@ public class CloseReadFileStatement implements IStatement {
             throw new FileException(stringValue.getRawValue(), exception);
         }
         state.getFileTable().remove(stringValue);
+        Locks.fileTableLock.writeLock().unlock();
 
         return null;
     }

@@ -1,5 +1,6 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.ProgramState;
 import api.model.exceptions.*;
 import api.model.expressions.IExpression;
@@ -10,6 +11,7 @@ import api.model.values.StringValue;
 
 import java.io.EOFException;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
 
 public class ReadFileStatement implements IStatement {
     IExpression expression;
@@ -24,7 +26,6 @@ public class ReadFileStatement implements IStatement {
     public ProgramState execute(ProgramState state) throws MyException {
         var symbolTable = state.getSymbolTable();
         var heap        = state.getHeap();
-        var value       = expression.evaluate(symbolTable, heap);
 
         // Check if the variable is defined
         if (!symbolTable.isDefined(varId))
@@ -35,14 +36,19 @@ public class ReadFileStatement implements IStatement {
             throw new InvalidTypeException(symbolTable.get(varId).getType(), new IntType());
 
         // Cast expression value to string
+        Locks.heapLock.readLock().lock();
+        var value = expression.evaluate(symbolTable, heap);
+        Locks.heapLock.readLock().unlock();
         if (!value.getType().equals(new StringType()))
             throw new InvalidTypeException(new StringType(), value.getType());
         var stringValue = (StringValue) value;
 
         // Check if file is open
+        Locks.fileTableLock.readLock().lock();
         if (!state.getFileTable().isDefined(stringValue))
             throw new FileException(stringValue.getRawValue(), "File is not open");
         var file = state.getFileTable().get(stringValue);
+        Locks.fileTableLock.readLock().unlock();
 
         // set the variable value to the parsed file line
         try {

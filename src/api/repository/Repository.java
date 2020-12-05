@@ -10,7 +10,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +38,7 @@ public class Repository implements IRepository {
         try {
             var log = new PrintWriter(new BufferedWriter(new FileWriter(logFilePath, true)));
             // TODO - standardize collection conversions to string
-            log.println("---- LOG " + state.toString() + " " + LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            log.format("%2$tH:%2$tM:%2$tS.%2$tL  %2$td-%2$tb-%2$tY  %1$s\n", state.toString(), LocalDateTime.now());
             log.println("- Execution Stack:");
             log.println(state.getExecutionStack().toString());
             log.println("- Symbol Table:");

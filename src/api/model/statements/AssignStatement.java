@@ -1,5 +1,6 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.ProgramState;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.UndefinedVariableException;
@@ -22,8 +23,10 @@ public class AssignStatement implements IStatement {
     @Override
     public ProgramState execute(ProgramState state) throws UndefinedVariableException, InvalidTypeException {
         var symbolTable = state.getSymbolTable();
-        var heap        = state.getHeap();
-        var value       = expression.evaluate(symbolTable, heap);
+
+        Locks.heapLock.readLock().lock();
+        var value = expression.evaluate(symbolTable, state.getHeap());
+        Locks.heapLock.readLock().unlock();
 
         if (!symbolTable.isDefined(varId))
             throw new UndefinedVariableException(varId);

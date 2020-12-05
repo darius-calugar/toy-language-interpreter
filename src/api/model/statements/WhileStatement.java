@@ -1,5 +1,6 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.ProgramState;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
@@ -25,7 +26,9 @@ public class WhileStatement implements IStatement {
         var heap        = state.getHeap();
 
         // Cast expression value to bool
+        Locks.heapLock.readLock().lock();
         var value = expression.evaluate(symbolTable, heap);
+        Locks.heapLock.readLock().unlock();
         if (!value.getType().equals(new BoolType()))
             throw new InvalidTypeException(new BoolType(), value.getType());
         var boolValue = (BoolValue) value;

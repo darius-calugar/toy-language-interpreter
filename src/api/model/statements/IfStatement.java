@@ -1,5 +1,6 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.ProgramState;
 import api.model.exceptions.InvalidTypeException;
 import api.model.expressions.IExpression;
@@ -28,7 +29,9 @@ public class IfStatement implements IStatement {
         var symbolTable    = state.getSymbolTable();
         var heap           = state.getHeap();
 
+        Locks.heapLock.readLock().lock();
         var value = condition.evaluate(symbolTable, heap);
+        Locks.heapLock.readLock().unlock();
         if (!value.getType().equals(new BoolType()))
             throw new InvalidTypeException(new BoolType(), value.getType());
 

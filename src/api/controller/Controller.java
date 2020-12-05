@@ -26,7 +26,6 @@ public class Controller {
 
     public Controller(IRepository repository) {
         this.repository = repository;
-        //this.executor = new Executors.
     }
 
     public void oneStep(List<ProgramState> states) {

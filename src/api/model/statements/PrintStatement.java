@@ -1,14 +1,15 @@
 package api.model.statements;
 
+import api.model.Locks;
 import api.model.exceptions.MyException;
 import api.model.ProgramState;
 import api.model.expressions.IExpression;
 
 /**
  Statement that adds the value of an expression to the program's output list.
+
  @see api.model.values.IValue IValue
- @see IExpression IExpression
- */
+ @see IExpression IExpression */
 public class PrintStatement implements IStatement {
     IExpression expression;
 
@@ -21,7 +22,13 @@ public class PrintStatement implements IStatement {
         var symbolTable = state.getSymbolTable();
         var heap        = state.getHeap();
 
-        state.getOutputList().push(expression.evaluate(symbolTable, heap));
+        Locks.heapLock.readLock().lock();
+        var value = expression.evaluate(symbolTable, heap);
+        Locks.heapLock.readLock().unlock();
+
+        Locks.outputListLock.writeLock().lock();
+        state.getOutputList().push(value);
+        Locks.outputListLock.writeLock().unlock();
         return null;
     }
 
