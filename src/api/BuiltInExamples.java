@@ -176,24 +176,26 @@ public enum BuiltInExamples {
     }),
 
     EXAMPLE9(new IStatement[]{
-            new DeclareStatement("v", new RefType(new IntType())),
-            new HeapAllocateStatement("v", new ValueExpression(new IntValue(20))),
-            new ForkStatement(
-                    new CompoundStatement(
-                            new NullStatement(),
-                            new PrintStatement(new HeapReadExpression(new VariableExpression("v")))
-                    )
-            ),
-            new HeapAllocateStatement("v", new ValueExpression(new IntValue(30))),
-            new PrintStatement(new HeapReadExpression(new VariableExpression("v"))),
+            new DeclareStatement("v", new IntType()),
+            new DeclareStatement("a", new RefType(new IntType())),
+            new AssignStatement("v", new ValueExpression(new IntValue(10))),
+            new HeapAllocateStatement("a", new ValueExpression(new IntValue(22))),
+            new ForkStatement(IStatement.foldStatements(new IStatement[]{
+                    new HeapWriteStatement("a", new ValueExpression(new IntValue(30))),
+                    new AssignStatement("v", new ValueExpression(new IntValue(32))),
+                    new PrintStatement(new VariableExpression("v")),
+                    new PrintStatement(new HeapReadExpression(new VariableExpression("a"))),
+            })),
+            new PrintStatement(new VariableExpression("v")),
+            new PrintStatement(new HeapReadExpression(new VariableExpression("a"))),
     }),
     ;
 
     private final IStatement[] statements;
 
-    BuiltInExamples(IStatement[] statements) { this.statements = statements; }
+    BuiltInExamples(IStatement[] statements) {this.statements = statements;}
 
-    public IStatement[] getStatements()      { return statements; }
+    public IStatement[] getStatements()      {return statements;}
 
-    public IStatement getStatementTree()     { return IStatement.foldStatements(statements); }
+    public IStatement getStatementTree()     {return IStatement.foldStatements(statements);}
 }

@@ -1,16 +1,15 @@
 package api.controller;
 
 import api.model.ProgramState;
+import api.model.collections.Heap;
+import api.model.collections.IHeap;
 import api.model.exceptions.MyException;
 import api.model.exceptions.OutOfBoundsException;
 import api.model.values.IValue;
 import api.model.values.RefValue;
 import api.repository.IRepository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -64,6 +63,18 @@ public class Controller {
         executor = Executors.newFixedThreadPool(2);
         var states = removeCompletedPrograms(repository.getStates());
         while (!states.isEmpty()) {
+            var usedHeapContent = GarbageCollector.conservativeGarbageCollector(
+                    repository.getStates().stream()
+                            .map(s -> s.getSymbolTable().getContent().values())
+                            .collect(Collectors.toList()),
+                    repository.getStates().stream()
+                            .map(ProgramState::getHeap)
+                            .map(IHeap::getContent)
+                            .findAny().orElse(new HashMap<>())
+            );
+            repository.getStates().stream()
+                    .findAny()
+                    .ifPresent(s -> s.getHeap().setContent(usedHeapContent));
             oneStep(states);
             states = removeCompletedPrograms(repository.getStates());
         }
@@ -77,30 +88,6 @@ public class Controller {
                 .collect(Collectors.toList());
     }
 
-    Map<Integer, IValue> safeGarbageCollector(List<Integer> addresses, Map<Integer, IValue> heap) {
-        return heap.entrySet().stream()
-                .filter(e -> addresses.contains(e.getKey()) ||
-                             heap.values().stream()
-                                     .filter(v -> v instanceof RefValue)
-                                     .anyMatch(v -> ((RefValue) v).getAddress() == e.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    Map<Integer, IValue> unsafeGarbageCollector(List<Integer> addresses, Map<Integer, IValue> heap) {
-        return heap.entrySet().stream()
-                .filter(e -> addresses.contains(e.getKey()))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    }
-
-    List<Integer> getAddresses(Collection<IValue> symTableValues) {
-        return symTableValues.stream()
-                .filter(v -> v instanceof RefValue)
-                .map(v -> {
-                    RefValue v1 = (RefValue) v;
-                    return v1.getAddress();
-                })
-                .collect(Collectors.toList());
-    }
 
     public IRepository getRepository() {
         return repository;
