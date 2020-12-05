@@ -39,11 +39,12 @@ public class Controller {
                     .map(future -> {
                         try {
                             return future.get();
-                        } catch (InterruptedException | ExecutionException e) {
+                        } catch (ExecutionException e) {
+                            System.out.println("Execution error: \"" + e.getCause().getMessage() + '\"');
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
-                        } catch (MyException e) {
-                            // TODO - Handle exceptions
                         }
+
                         return null;
                     })
                     .filter(Objects::nonNull)

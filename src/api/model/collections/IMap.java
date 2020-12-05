@@ -46,4 +46,6 @@ public interface IMap<K, T> {
     Stream<K> getKeys();
 
     Stream<T> getValues();
+
+    MyMap<K, T> deepCopy();
 }
