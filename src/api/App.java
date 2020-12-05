@@ -6,11 +6,12 @@ import api.model.collections.MyMap;
 import api.model.collections.Heap;
 import api.model.collections.MyList;
 import api.model.collections.MyStack;
-import api.view.commands.ClearLogsCommand;
-import api.view.commands.ExitCommand;
-import api.view.commands.RunExampleCommand;
+import api.view.commands.*;
 import api.repository.Repository;
 import api.view.TextMenu;
+
+import java.util.Arrays;
+import java.util.LinkedList;
 
 public class App {
     static public void main(String[] args) {
@@ -105,16 +106,20 @@ public class App {
         var controller9 = new Controller(repository9);
 
         var textMenu = new TextMenu();
+        var exampleCommands = Arrays.asList(
+                new RunExampleCommand("1", "Run example 1 (v0.1a)", controller1),
+                new RunExampleCommand("2", "Run example 2 (v0.1a)", controller2),
+                new RunExampleCommand("3", "Run example 3 (v0.1a)", controller3),
+                new RunExampleCommand("4", "Run example 4 (v0.2a)", controller4),
+                new RunExampleCommand("5", "Run example 5 (v0.3a)", controller5),
+                new RunExampleCommand("6", "Run example 6 (v0.3a)", controller6),
+                new RunExampleCommand("7", "Run example 7 (v0.3a)", controller7),
+                new RunExampleCommand("8", "Run example 8 (v0.3a)", controller8),
+                new RunExampleCommand("9", "Run example 9 (v0.4a)", controller9)
+        );
         textMenu.addCommand(new ExitCommand("0", "Exit"));
-        textMenu.addCommand(new RunExampleCommand("1", "Run example 1 (v0.1a)", controller1));
-        textMenu.addCommand(new RunExampleCommand("2", "Run example 2 (v0.1a)", controller2));
-        textMenu.addCommand(new RunExampleCommand("3", "Run example 3 (v0.1a)", controller3));
-        textMenu.addCommand(new RunExampleCommand("4", "Run example 4 (v0.2a)", controller4));
-        textMenu.addCommand(new RunExampleCommand("5", "Run example 5 (v0.3a)", controller5));
-        textMenu.addCommand(new RunExampleCommand("6", "Run example 6 (v0.3a)", controller6));
-        textMenu.addCommand(new RunExampleCommand("7", "Run example 7 (v0.3a)", controller7));
-        textMenu.addCommand(new RunExampleCommand("8", "Run example 8 (v0.3a)", controller8));
-        textMenu.addCommand(new RunExampleCommand("9", "Run example 9 (v0.4a)", controller9));
+        textMenu.addAllCommands(exampleCommands);
+        textMenu.addCommand(new RunAllCommand("a", exampleCommands));
         textMenu.addCommand(new ClearLogsCommand("c", "Clear logs", "logs", "(.*).txt"));
         textMenu.show();
     }

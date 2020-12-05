@@ -3,8 +3,10 @@ package api.view;
 import api.view.commands.Command;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  Implements a text-based user interface that allows execution of commands.
@@ -22,6 +24,10 @@ public class TextMenu {
      */
     public void addCommand(Command command) {
         commands.put(command.getKey(), command);
+    }
+
+    public void addAllCommands(List<? extends Command> commands) {
+        this.commands.putAll(commands.stream().collect(Collectors.toMap(Command::getKey, (Command c) -> c)));
     }
 
     /**

@@ -10,6 +10,7 @@ public class ExitCommand extends Command {
 
     @Override
     public void execute() {
+        System.out.println("Quitting...");
         System.exit(0);
     }
 
