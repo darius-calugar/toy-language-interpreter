@@ -4,6 +4,7 @@ import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
+import api.model.types.BoolType;
 import api.model.types.IType;
 import api.model.types.IntType;
 import api.model.values.BoolValue;
@@ -49,6 +50,18 @@ public class RelationalExpression implements IExpression {
             case equal -> new BoolValue(lRawValue == rRawValue);
             case notEqual -> new BoolValue(lRawValue != rRawValue);
         };
+    }
+
+    @Override
+    public IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException {
+        var expectedType = new IntType();
+        var lhsType      = lhs.typeCheck(typeEnvironment);
+        var rhsType      = rhs.typeCheck(typeEnvironment);
+        if (!lhsType.equals(expectedType))
+            throw new InvalidTypeException(expectedType, lhsType);
+        if (!rhsType.equals(expectedType))
+            throw new InvalidTypeException(expectedType, rhsType);
+        return new BoolType();
     }
 
     @Override

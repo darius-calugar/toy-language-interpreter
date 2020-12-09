@@ -175,6 +175,18 @@ public enum BuiltInExamples {
             new PrintStatement(new HeapReadExpression(new HeapReadExpression(new VariableExpression("a")))),
     }),
 
+    /**
+     int v;
+     <br/>Ref int a;
+     <br/>v=10;
+     <br/>new(a,22);
+     <br/>fork {
+     <br/>   wH(a,30);
+     <br/>   v=32;print(v);
+     <br/>   print(rH(a));
+     <br/>}
+     <br/>print(v);print(rH(a))
+     */
     EXAMPLE9(new IStatement[]{
             new DeclareStatement("v", new IntType()),
             new DeclareStatement("a", new RefType(new IntType())),

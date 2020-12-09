@@ -1,7 +1,9 @@
 package api.model.statements;
 
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.MyException;
+import api.model.types.IType;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -17,13 +19,15 @@ public interface IStatement {
      */
     ProgramState execute(ProgramState state) throws MyException;
 
+    IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment);
+
     /**
      @return Generated deep copy of the statement.
      */
     IStatement deepCopy();
 
     static IStatement foldStatements(IStatement[] statements) {
-        var statementList = Arrays.asList(statements);
+        var statementList = Arrays.asList(statements.clone());
         Collections.reverse(statementList);
         return statementList.stream()
                 .reduce(new NullStatement(), (subtotal, element) -> new CompoundStatement(element, subtotal));

@@ -1,6 +1,8 @@
 package api.model.statements;
 
 import api.model.ProgramState;
+import api.model.collections.IMap;
+import api.model.types.IType;
 
 /**
  Statement that executes 2 sub-statements in left-to-right order.
@@ -20,6 +22,11 @@ public class CompoundStatement implements IStatement {
         stack.push(rhs);
         stack.push(lhs);
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        return rhs.typeCheck(lhs.typeCheck(typeEnvironment));
     }
 
     @Override

@@ -2,7 +2,9 @@ package api.model.expressions;
 
 import api.model.collections.IMap;
 import api.model.collections.IHeap;
+import api.model.exceptions.MyException;
 import api.model.exceptions.UndefinedVariableException;
+import api.model.types.IType;
 import api.model.values.IValue;
 
 /**
@@ -20,6 +22,11 @@ public class VariableExpression implements IExpression {
         if (!symTable.isDefined(varId))
             throw new UndefinedVariableException(varId);
         return symTable.get(varId);
+    }
+
+    @Override
+    public IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException {
+        return typeEnvironment.get(varId);
     }
 
     @Override

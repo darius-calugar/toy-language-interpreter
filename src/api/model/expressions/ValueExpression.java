@@ -2,6 +2,8 @@ package api.model.expressions;
 
 import api.model.collections.IMap;
 import api.model.collections.IHeap;
+import api.model.exceptions.MyException;
+import api.model.types.IType;
 import api.model.values.IValue;
 
 /**
@@ -17,6 +19,11 @@ public class ValueExpression implements IExpression {
     @Override
     public IValue evaluate(IMap<String, IValue> symTable, IHeap heap) {
         return value;
+    }
+
+    @Override
+    public IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException {
+        return value.getType();
     }
 
     @Override

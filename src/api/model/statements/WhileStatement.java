@@ -2,22 +2,24 @@ package api.model.statements;
 
 import api.model.Locks;
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
 import api.model.expressions.IExpression;
 import api.model.types.BoolType;
+import api.model.types.IType;
 import api.model.values.BoolValue;
 
 /**
  Statement that executes a sub-statement until evaluating the condition expression returns true.
  */
 public class WhileStatement implements IStatement {
-    private final IExpression expression;
+    private final IExpression condition;
     private final IStatement  statement;
 
     public WhileStatement(IExpression expression, IStatement statement) {
-        this.expression = expression;
-        this.statement  = statement;
+        this.condition = expression;
+        this.statement = statement;
     }
 
     @Override
@@ -27,7 +29,7 @@ public class WhileStatement implements IStatement {
 
         // Cast expression value to bool
         Locks.heapLock.readLock().lock();
-        var value = expression.evaluate(symbolTable, heap);
+        var value = condition.evaluate(symbolTable, heap);
         Locks.heapLock.readLock().unlock();
         if (!value.getType().equals(new BoolType()))
             throw new InvalidTypeException(new BoolType(), value.getType());
@@ -43,12 +45,21 @@ public class WhileStatement implements IStatement {
     }
 
     @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        var expectedType = new BoolType();
+        var conditionType = condition.typeCheck(typeEnvironment);
+        if (!conditionType.equals(expectedType))
+            throw new InvalidTypeException(expectedType, conditionType);
+        return statement.typeCheck(typeEnvironment);
+    }
+
+    @Override
     public IStatement deepCopy() {
-        return new WhileStatement(expression, statement.deepCopy());
+        return new WhileStatement(condition, statement.deepCopy());
     }
 
     @Override
     public String toString() {
-        return "(while (" + expression.toString() + ") " + statement.toString() + ")";
+        return "(while (" + condition.toString() + ") " + statement.toString() + ")";
     }
 }

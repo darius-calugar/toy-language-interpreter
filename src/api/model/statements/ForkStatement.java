@@ -1,8 +1,10 @@
 package api.model.statements;
 
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.collections.MyStack;
 import api.model.exceptions.MyException;
+import api.model.types.IType;
 
 public class ForkStatement implements IStatement {
     private final IStatement statement;
@@ -20,6 +22,11 @@ public class ForkStatement implements IStatement {
                 state.getFileTable(),
                 state.getHeap(),
                 statement);
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        return statement.typeCheck(typeEnvironment);
     }
 
     @Override

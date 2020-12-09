@@ -3,6 +3,7 @@ package api.model.expressions;
 import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.MyException;
+import api.model.types.IType;
 import api.model.values.IValue;
 
 /**
@@ -18,4 +19,6 @@ public interface IExpression {
      @see api.model.ProgramState ProgramState
      */
     IValue evaluate(IMap<String, IValue> symTable, IHeap heap) throws MyException;
+
+    IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException;
 }

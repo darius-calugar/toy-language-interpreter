@@ -1,5 +1,7 @@
 package api.model.statements;
 
+import api.model.collections.IMap;
+import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MultipleDefinitionException;
 import api.model.ProgramState;
 import api.model.types.IType;
@@ -25,6 +27,14 @@ public class DeclareStatement implements IStatement {
             throw new MultipleDefinitionException(varId);
         symbolTable.set(varId, type.defaultValue());
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        if (typeEnvironment.isDefined(varId))
+            throw new MultipleDefinitionException(varId);
+        typeEnvironment.set(varId, type);
+        return typeEnvironment;
     }
 
     @Override

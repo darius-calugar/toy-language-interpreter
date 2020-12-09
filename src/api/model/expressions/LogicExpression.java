@@ -3,8 +3,10 @@ package api.model.expressions;
 import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.InvalidTypeException;
+import api.model.exceptions.MyException;
 import api.model.types.BoolType;
 import api.model.types.IType;
+import api.model.types.IntType;
 import api.model.values.BoolValue;
 import api.model.values.IValue;
 
@@ -49,6 +51,18 @@ public class LogicExpression implements IExpression {
             case nor -> new BoolValue(!(lRawValue || rRawValue));
             case nxor -> new BoolValue(!((lRawValue || rRawValue) && !(lRawValue && rRawValue)));
         };
+    }
+
+    @Override
+    public IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException {
+        var expectedType = new BoolType();
+        var lhsType      = lhs.typeCheck(typeEnvironment);
+        var rhsType      = rhs.typeCheck(typeEnvironment);
+        if (!lhsType.equals(expectedType))
+            throw new InvalidTypeException(expectedType, lhsType);
+        if (!rhsType.equals(expectedType))
+            throw new InvalidTypeException(expectedType, rhsType);
+        return expectedType;
     }
 
     @Override

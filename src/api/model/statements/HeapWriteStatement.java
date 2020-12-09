@@ -2,10 +2,12 @@ package api.model.statements;
 
 import api.model.Locks;
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.ExpectedRefTypeException;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
 import api.model.expressions.IExpression;
+import api.model.types.IType;
 import api.model.types.RefType;
 import api.model.values.RefValue;
 
@@ -39,6 +41,17 @@ public class HeapWriteStatement implements IStatement {
         heap.set(((RefValue) varValue).getAddress(), value);
 
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        var varType        = typeEnvironment.get(varId);
+        var expressionType = expression.typeCheck(typeEnvironment);
+        if (!(varType instanceof RefType))
+            throw new ExpectedRefTypeException(varType);
+        if (!((RefType) varType).getInnerType().equals(expressionType))
+            throw new InvalidTypeException(((RefType) varType).getInnerType(), expressionType);
+        return typeEnvironment;
     }
 
     @Override

@@ -4,6 +4,8 @@ import api.model.collections.IMap;
 import api.model.collections.IHeap;
 import api.model.exceptions.ExpectedRefTypeException;
 import api.model.exceptions.MyException;
+import api.model.types.IType;
+import api.model.types.RefType;
 import api.model.values.IValue;
 import api.model.values.RefValue;
 
@@ -20,6 +22,14 @@ public class HeapReadExpression implements IExpression {
         if (!(value instanceof RefValue))
             throw new ExpectedRefTypeException(value.getType());
         return heap.get(((RefValue) value).getAddress());
+    }
+
+    @Override
+    public IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException {
+        var expressionType = expression.typeCheck(typeEnvironment);
+        if (expressionType instanceof RefType)
+            return ((RefType) expressionType).getInnerType();
+        throw new ExpectedRefTypeException(expressionType);
     }
 
     @Override

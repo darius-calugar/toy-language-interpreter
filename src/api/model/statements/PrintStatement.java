@@ -1,9 +1,11 @@
 package api.model.statements;
 
 import api.model.Locks;
+import api.model.collections.IMap;
 import api.model.exceptions.MyException;
 import api.model.ProgramState;
 import api.model.expressions.IExpression;
+import api.model.types.IType;
 
 /**
  Statement that adds the value of an expression to the program's output list.
@@ -30,6 +32,11 @@ public class PrintStatement implements IStatement {
         state.getOutputList().push(value);
         Locks.outputListLock.writeLock().unlock();
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        return typeEnvironment;
     }
 
     @Override

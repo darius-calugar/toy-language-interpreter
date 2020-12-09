@@ -2,10 +2,12 @@ package api.model.statements;
 
 import api.model.Locks;
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.FileException;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
 import api.model.expressions.IExpression;
+import api.model.types.IType;
 import api.model.types.StringType;
 import api.model.values.StringValue;
 
@@ -45,6 +47,15 @@ public class OpenReadFileStatement implements IStatement {
         }
 
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        var expectedType   = new StringType();
+        var expressionType = expression.typeCheck(typeEnvironment);
+        if (expressionType.equals(expectedType))
+            return typeEnvironment;
+        throw new InvalidTypeException(new StringType(), expressionType);
     }
 
     @Override

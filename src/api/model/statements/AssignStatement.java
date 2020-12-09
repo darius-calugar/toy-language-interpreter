@@ -2,9 +2,11 @@ package api.model.statements;
 
 import api.model.Locks;
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.UndefinedVariableException;
 import api.model.expressions.IExpression;
+import api.model.types.IType;
 
 /**
  Statement that assigns a value to a variable id inside the program's symbol table.
@@ -37,6 +39,15 @@ public class AssignStatement implements IStatement {
 
         symbolTable.set(varId, value);
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        var varType = typeEnvironment.get(varId);
+        var expressionType = expression.typeCheck(typeEnvironment);
+        if (varType.equals(expressionType))
+            return typeEnvironment;
+        throw new InvalidTypeException(varType, expressionType);
     }
 
     @Override

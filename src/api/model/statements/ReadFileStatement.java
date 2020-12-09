@@ -2,8 +2,10 @@ package api.model.statements;
 
 import api.model.Locks;
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.*;
 import api.model.expressions.IExpression;
+import api.model.types.IType;
 import api.model.types.IntType;
 import api.model.types.StringType;
 import api.model.values.IntValue;
@@ -14,8 +16,8 @@ import java.io.IOException;
 import java.util.concurrent.locks.Lock;
 
 public class ReadFileStatement implements IStatement {
-    IExpression expression;
     String      varId;
+    IExpression expression;
 
     public ReadFileStatement(IExpression expression, String varId) {
         this.expression = expression;
@@ -67,6 +69,19 @@ public class ReadFileStatement implements IStatement {
         }
 
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        var expectedVarType        = new IntType();
+        var expectedExpressionType = new StringType();
+        var varType                = typeEnvironment.get(varId);
+        var expressionType         = expression.typeCheck(typeEnvironment);
+        if (!expressionType.equals(expectedExpressionType))
+            throw new InvalidTypeException(expectedExpressionType, expressionType);
+        if (!varType.equals(expectedVarType))
+            throw new InvalidTypeException(expectedVarType, varType);
+        return typeEnvironment;
     }
 
     @Override

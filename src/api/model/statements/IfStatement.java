@@ -2,9 +2,11 @@ package api.model.statements;
 
 import api.model.Locks;
 import api.model.ProgramState;
+import api.model.collections.IMap;
 import api.model.exceptions.InvalidTypeException;
 import api.model.expressions.IExpression;
 import api.model.types.BoolType;
+import api.model.types.IType;
 import api.model.values.BoolValue;
 
 /**
@@ -40,6 +42,15 @@ public class IfStatement implements IStatement {
         else
             executionStack.push(rhs);
         return null;
+    }
+
+    @Override
+    public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        var expectedType = new BoolType();
+        var conditionType = condition.typeCheck(typeEnvironment);
+        if (!conditionType.equals(expectedType))
+            throw new InvalidTypeException(expectedType, conditionType);
+        return rhs.typeCheck(lhs.typeCheck(typeEnvironment));
     }
 
     @Override
