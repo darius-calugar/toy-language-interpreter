@@ -55,7 +55,7 @@ public class CloseReadFileStatement implements IStatement {
         var expressionType = expression.typeCheck(typeEnvironment);
         if (expressionType.equals(expectedType))
             return typeEnvironment;
-        throw new InvalidTypeException(new StringType(), expressionType);
+        throw new InvalidTypeException(expectedType, expressionType);
     }
 
     @Override

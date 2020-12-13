@@ -26,6 +26,8 @@ public class VariableExpression implements IExpression {
 
     @Override
     public IType typeCheck(IMap<String, IType> typeEnvironment) throws MyException {
+        if (!typeEnvironment.isDefined(varId))
+            throw new UndefinedVariableException(varId);
         return typeEnvironment.get(varId);
     }
 

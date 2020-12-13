@@ -6,6 +6,7 @@ import api.model.collections.IMap;
 import api.model.exceptions.ExpectedRefTypeException;
 import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
+import api.model.exceptions.UndefinedVariableException;
 import api.model.expressions.IExpression;
 import api.model.types.IType;
 import api.model.types.RefType;
@@ -45,6 +46,8 @@ public class HeapWriteStatement implements IStatement {
 
     @Override
     public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
+        if (!typeEnvironment.isDefined(varId))
+            throw new UndefinedVariableException(varId);
         var varType        = typeEnvironment.get(varId);
         var expressionType = expression.typeCheck(typeEnvironment);
         if (!(varType instanceof RefType))

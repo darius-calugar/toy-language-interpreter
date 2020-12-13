@@ -43,7 +43,9 @@ public class AssignStatement implements IStatement {
 
     @Override
     public IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) {
-        var varType = typeEnvironment.get(varId);
+        if (!typeEnvironment.isDefined(varId))
+            throw new UndefinedVariableException(varId);
+        var varType        = typeEnvironment.get(varId);
         var expressionType = expression.typeCheck(typeEnvironment);
         if (varType.equals(expressionType))
             return typeEnvironment;

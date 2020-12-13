@@ -125,6 +125,8 @@ public class App {
             var repository9 = new Repository(programState9, "logs\\log9.txt");
             var controller9 = new Controller(repository9);
 
+            System.out.println("Loaded all examples successfully\n");
+
             var textMenu = new TextMenu();
             var exampleCommands = Arrays.asList(
                     new RunExampleCommand("1", "Run example 1 (v0.1a)", controller1),
@@ -143,8 +145,7 @@ public class App {
             textMenu.addCommand(new ClearLogsCommand("c", "Clear logs", "logs", "(.*).txt"));
             textMenu.show();
         } catch (MyException exception) {
-            System.out.println(exception.getMessage());
-            exception.printStackTrace();
+            System.out.println("\u001b[31m" + exception.getMessage() + "\u001b[0m");
         }
     }
 }
