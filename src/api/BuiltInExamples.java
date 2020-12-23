@@ -201,21 +201,6 @@ public enum BuiltInExamples {
             new PrintStatement(new VariableExpression("v")),
             new PrintStatement(new HeapReadExpression(new VariableExpression("a"))),
     }),
-
-    EXAMPLE9BROKEN(new IStatement[]{
-            new DeclareStatement("v", new IntType()),
-            new DeclareStatement("a", new RefType(new IntType())),
-            new AssignStatement("v", new ValueExpression(new StringValue("10"))), // <-- Broken Here
-            new HeapAllocateStatement("a", new ValueExpression(new IntValue(22))),
-            new ForkStatement(IStatement.foldStatements(new IStatement[]{
-                    new HeapWriteStatement("a", new ValueExpression(new IntValue(30))),
-                    new AssignStatement("v", new ValueExpression(new IntValue(32))),
-                    new PrintStatement(new VariableExpression("v")),
-                    new PrintStatement(new HeapReadExpression(new VariableExpression("a"))),
-            })),
-            new PrintStatement(new VariableExpression("v")),
-            new PrintStatement(new HeapReadExpression(new VariableExpression("a"))),
-    }),
     ;
 
     private final IStatement[] statements;
