@@ -1,4 +1,4 @@
-package api.view.commands;
+package api.view.cli.commands;
 
 /**
  Stops the interpreter process upon execution.

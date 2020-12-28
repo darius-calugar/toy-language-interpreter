@@ -7,6 +7,8 @@ import api.model.types.IType;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 public interface IStatement {
     /**
@@ -31,5 +33,16 @@ public interface IStatement {
         Collections.reverse(statementList);
         return statementList.stream()
                 .reduce(new NullStatement(), (subtotal, element) -> new CompoundStatement(element, subtotal));
+    }
+
+    static List<IStatement> unfoldStatement(IStatement statement) {
+        var statementList = new LinkedList<IStatement>();
+        while (statement instanceof CompoundStatement) {
+            statementList.add(((CompoundStatement) statement).lhs);
+            statement = ((CompoundStatement) statement).rhs;
+        }
+        if (statement != null)
+            statementList.add(statement);
+        return statementList;
     }
 }

@@ -1,6 +1,4 @@
-package api.view.commands;
-
-import api.view.TextMenu;
+package api.view.cli.commands;
 
 import java.util.List;
 

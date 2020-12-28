@@ -2,6 +2,8 @@ package api.model.collections;
 
 import api.model.exceptions.OutOfBoundsException;
 
+import java.util.List;
+
 public interface IStack<T> {
     /**
      Push an entry to the top of the stack.
@@ -33,4 +35,6 @@ public interface IStack<T> {
      @return Whether the stack is empty
      */
     boolean isEmpty();
+
+    List<T> getContent();
 }

@@ -3,6 +3,7 @@ package api.model.collections;
 import api.model.exceptions.OutOfBoundsException;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class MyStack<T> implements IStack<T> {
     private final java.util.Deque<T> stack = new LinkedList<>();
@@ -36,10 +37,12 @@ public class MyStack<T> implements IStack<T> {
         return stack.isEmpty();
     }
 
+    public List<T> getContent() {return List.copyOf(stack);}
+
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        for (var elem: stack) {
+        for (var elem : stack) {
             result.append(elem.toString());
             result.append('\n');
         }

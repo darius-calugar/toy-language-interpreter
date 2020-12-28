@@ -1,4 +1,4 @@
-package api.view.commands;
+package api.view.cli.commands;
 
 import api.controller.Controller;
 import api.model.exceptions.MyException;

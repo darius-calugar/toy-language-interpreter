@@ -1,6 +1,6 @@
-package api.view;
+package api.view.cli;
 
-import api.view.commands.Command;
+import api.view.cli.commands.Command;
 
 import java.util.HashMap;
 import java.util.List;

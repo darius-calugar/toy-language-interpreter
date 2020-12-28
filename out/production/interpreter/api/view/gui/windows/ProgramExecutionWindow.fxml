@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../AppGUIStyleSheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.view.gui.windows.ProgramExecutionWindowController">
+    <top>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <MenuBar id="menu-bar">
+                    <menus>
+                        <Menu mnemonicParsing="false" text="File">
+                            <items>
+                        <MenuItem mnemonicParsing="false" text="Select Program..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Open Log Folder..." />
+                        <MenuItem mnemonicParsing="false" text="Change Log Location..." />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" text="Exit" />
+                            </items>
+                        </Menu>
+                    </menus>
+                </MenuBar>
+                <HBox id="tool-bar" alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="32.0" spacing="4.0">
+                    <children>
+                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                          <Button id="flat-button" fx:id="buttonRunAll" mnemonicParsing="false" onAction="#handleRunAll" prefHeight="20.0">
+                              <graphic>
+                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                      <viewport>
+                                          <Rectangle2D />
+                                      </viewport>
+                                      <image>
+                                          <Image url="@../resources/run_all.png" />
+                                      </image>
+                                  </ImageView>
+                              </graphic>
+                     <tooltip>
+                        <Tooltip text="Run All Steps" />
+                     </tooltip>
+                          </Button>
+                          <Button id="flat-button" fx:id="buttonRunOnce" mnemonicParsing="false" onAction="#handleRunOnce" prefHeight="20.0">
+                              <graphic>
+                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                      <image>
+                                          <Image url="@../resources/run_one.png" />
+                                      </image>
+                                  </ImageView>
+                              </graphic>
+                     <tooltip>
+                        <Tooltip text="Run One Step" />
+                     </tooltip>
+                          </Button>
+                    </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="8.0" right="8.0" />
+               </padding>
+                </HBox>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
+            <items>
+                <VBox id="bordered">
+                    <children>
+                  <HBox id="header">
+                     <children>
+                                <Label text="Global State" />
+                     </children>
+                  </HBox>
+                        <Accordion VBox.vgrow="ALWAYS">
+                            <panes>
+                                <TitledPane animated="false" text="Heap">
+                                    <content>
+                                        <TableView id="flat" fx:id="heapTableView" prefWidth="200.0">
+                                            <columns>
+                                                <TableColumn fx:id="heapAddressTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Address" />
+                                                <TableColumn fx:id="heapValueTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Value" />
+                                            </columns>
+                                        </TableView>
+                                    </content>
+                                </TitledPane>
+                                <TitledPane animated="false" text="Files">
+                                    <content>
+                                        <ListView fx:id="fileListView" prefWidth="200.0" />
+                                    </content>
+                                </TitledPane>
+                                <TitledPane animated="false" text="Output">
+                                    <content>
+                                        <ListView fx:id="outputListView" />
+                                    </content>
+                                </TitledPane>
+                            </panes>
+                        </Accordion>
+                    </children>
+                </VBox>
+                <SplitPane dividerPositions="0.3" orientation="VERTICAL" prefHeight="520.0" prefWidth="400.0">
+                    <items>
+                        <VBox id="bordered">
+                            <children>
+                        <HBox id="header">
+                           <children>
+                                        <Label text="Active Threads" />
+                              <Pane HBox.hgrow="ALWAYS" />
+                              <Label text="Count: " />
+                              <TextField fx:id="threadCountField" alignment="CENTER" prefHeight="20.0" prefWidth="32.0" text="0">
+                                 <font>
+                                    <Font size="11.0" />
+                                 </font>
+                              </TextField>
+                           </children>
+                        </HBox>
+                                <ListView id="flat" fx:id="activeThreadsListView" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                            </children>
+                        </VBox>
+                        <VBox id="bordered" layoutX="10.0" layoutY="10.0">
+                            <children>
+                        <HBox id="header" alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="32.0">
+                           <children>
+                                        <Label fx:id="activeThreadLabel" text="None" />
+                           </children>
+                        </HBox>
+                                <Accordion VBox.vgrow="ALWAYS">
+                                    <panes>
+                                        <TitledPane animated="false" text="Execution Stack">
+                                            <content>
+                                                <ListView fx:id="executionStackListView" />
+                                            </content>
+                                        </TitledPane>
+                                        <TitledPane animated="false" text="Symbol Table">
+                                            <content>
+                                                <TableView id="flat" fx:id="symbolTableView">
+                                                    <columns>
+                                                        <TableColumn fx:id="SymbolTableNameTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Name" />
+                                                        <TableColumn fx:id="SymbolTableValueTableColumn" editable="false" minWidth="0.0" prefWidth="100.0" sortable="false" text="Value" />
+                                                    </columns>
+                                                </TableView>
+                                            </content>
+                                        </TitledPane>
+                                    </panes>
+                                </Accordion>
+                            </children>
+                        </VBox>
+                    </items>
+                </SplitPane>
+            </items>
+        </SplitPane>
+    </center>
+   <bottom>
+      <AnchorPane id="status-bar" BorderPane.alignment="CENTER">
+         <children>
+            <HBox layoutX="-0.688323974609375" layoutY="-4.661137104034424" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ProgressIndicator fx:id="runProgressIndicator" prefHeight="16.0" prefWidth="16.0" visible="false" />
+                  <Label fx:id="statusLabel" />
+               </children>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+         </padding>
+      </AnchorPane>
+   </bottom>
+</BorderPane>

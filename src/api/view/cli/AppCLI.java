@@ -1,5 +1,6 @@
-package api;
+package api.view.cli;
 
+import api.BuiltInExamples;
 import api.controller.Controller;
 import api.model.ProgramState;
 import api.model.collections.MyMap;
@@ -7,14 +8,13 @@ import api.model.collections.Heap;
 import api.model.collections.MyList;
 import api.model.collections.MyStack;
 import api.model.exceptions.MyException;
-import api.view.commands.*;
+import api.view.cli.commands.*;
 import api.repository.Repository;
-import api.view.TextMenu;
+import api.view.cli.TextMenu;
 
 import java.util.Arrays;
-import java.util.LinkedList;
 
-public class App {
+public class AppCLI {
     static public void main(String[] args) {
         try {
             // Example 1 Controller

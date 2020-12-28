@@ -1,4 +1,4 @@
-package api.view.commands;
+package api.view.cli.commands;
 
 import java.io.File;
 import java.util.Arrays;

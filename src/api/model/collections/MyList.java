@@ -49,7 +49,7 @@ public class MyList<T> implements IList<T> {
 
     @Override
     public List<T> getContent() {
-        return list;
+        return List.copyOf(list);
     }
 
     @Override

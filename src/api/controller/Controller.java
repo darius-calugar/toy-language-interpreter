@@ -1,12 +1,7 @@
 package api.controller;
 
 import api.model.ProgramState;
-import api.model.collections.Heap;
 import api.model.collections.IHeap;
-import api.model.exceptions.MyException;
-import api.model.exceptions.OutOfBoundsException;
-import api.model.values.IValue;
-import api.model.values.RefValue;
 import api.repository.IRepository;
 
 import java.util.*;
@@ -20,8 +15,10 @@ import java.util.stream.Collectors;
  Interpreter controller.
  */
 public class Controller {
-    IRepository     repository;
-    ExecutorService executor;
+    private final IRepository     repository;
+    private       ExecutorService executor;
+
+    public static final int MAX_THREADS = 8;
 
     public Controller(IRepository repository) {
         this.repository = repository;
@@ -43,7 +40,6 @@ public class Controller {
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-
                         return null;
                     })
                     .filter(Objects::nonNull)
@@ -53,14 +49,14 @@ public class Controller {
             e.printStackTrace();
         }
         states.forEach(repository::logProgramState);
-        repository.setStates(states);
+        repository.setStates(new LinkedList<>(states));
     }
 
     /**
      Execute all steps of the current program state.
      */
     public void allStep() {
-        executor = Executors.newFixedThreadPool(2);
+        executor = Executors.newFixedThreadPool(MAX_THREADS);
         var states = removeCompletedPrograms(repository.getStates());
         while (!states.isEmpty()) {
             var usedHeapContent = GarbageCollector.conservativeGarbageCollector(
@@ -82,7 +78,7 @@ public class Controller {
         repository.setStates(states);
     }
 
-    List<ProgramState> removeCompletedPrograms(List<ProgramState> programStates) {
+    public List<ProgramState> removeCompletedPrograms(List<ProgramState> programStates) {
         return programStates.stream()
                 .filter(ProgramState::isNotCompleted)
                 .collect(Collectors.toList());
@@ -91,5 +87,13 @@ public class Controller {
 
     public IRepository getRepository() {
         return repository;
+    }
+
+    public void setExecutor(ExecutorService executor) {
+        this.executor = executor;
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
     }
 }

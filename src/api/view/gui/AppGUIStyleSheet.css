@@ -1,0 +1,217 @@
+* {
+    -my-base: #101010;
+    -my-background: #151515;
+    -my-surface: #202020;
+    -my-surface-alt: #2a2a2a;
+    -my-cell: #121212;
+    -my-border: #404040;
+    -my-border-alt: #202020;
+    -my-input: #303030;
+    -my-accent: #00ffff;
+
+    -my-hover: #ffffff10;
+    -my-selected: #ffffff30;
+    -my-pressed: #00ffff50;
+    -my-focused: #ffffff20;
+
+    -my-body: #ffffff;
+    -my-heading: #dddddd;
+}
+
+.root {
+    inherit: true;
+    -fx-font-family: "JetBrains Mono";
+    -fx-base: -my-surface;
+    -fx-background: -my-background;
+    -fx-font-size: 14;
+}
+
+.text-area {
+    -fx-text-fill: -my-body;
+}
+
+.text-area .content {
+    -fx-background-color: -my-surface;
+}
+
+.list-view {
+    -fx-background-color: -my-background;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-border-color: black;
+}
+
+.list-view .list-cell {
+    -fx-background: -my-cell;
+    -fx-text-fill: -my-body;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border-alt;
+}
+
+.list-view .list-cell:hover {
+    -fx-background-color: -my-hover;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: -my-selected;
+}
+
+.list-view .list-cell:pressed {
+    -fx-background-color: -my-pressed;
+}
+
+.table-view {
+    -fx-background-color: -my-background;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-border-color: black;
+}
+
+.table-view .column-header-background .filler {
+    -fx-background-color: -my-base;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border;
+}
+
+.table-view .column-header {
+    -fx-background-color: -my-base;
+    -fx-border-width: 0 1 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border;
+}
+
+.table-row-cell .table-cell {
+    -fx-background-color: -my-background;
+    -fx-text-fill: -my-body;
+    -fx-border-width: 0 1 0 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border-alt;
+}
+
+.table-row-cell .table-cell:hover {
+    -fx-background-color: -my-hover;
+}
+
+.table-row-cell .table-cell:selected {
+    -fx-background-color: -my-selected;
+}
+
+.table-row-cell .table-cell:pressed {
+    -fx-background-color: -my-pressed;
+}
+
+.table-row-cell .table-cell:focused {
+    -fx-background-color: -my-focused;
+}
+
+.table-row-cell {
+    -fx-background-color: -my-base;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border-alt;
+}
+
+.accordion {
+    -fx-background-color: -my-base;
+}
+
+.accordion .titled-pane .title {
+    -fx-background-color: -my-surface;
+    -fx-border-width: 1 0 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border;
+}
+
+.accordion .titled-pane .content {
+    -fx-border-width: 0;
+}
+
+.accordion .titled-pane .list-view {
+    -fx-border-width: 0;
+}
+
+.split-pane > .split-pane-divider {
+    -fx-background-color: -my-border;
+    -fx-padding: 2;
+}
+
+.context-menu {
+    -fx-background-color: -my-surface;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-border-color: -my-base;
+}
+
+.text-field {
+    -fx-background-color: -my-input;
+    -fx-padding: 2 2 2 2;
+    -fx-text-fill: white;
+    -fx-border-width: 1;
+    -fx-border-color: -my-base;
+}
+
+#menu-bar {
+    -fx-background-color: -my-base;
+    -fx-font-size: 12;
+}
+
+#tool-bar {
+    -fx-background-color: -my-background;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border;
+    -fx-min-height: 32;
+    -fx-pref-height: 32;
+    -fx-padding: 0 8 0 8;
+}
+
+#status-bar {
+    -fx-background-color: -my-surface;
+}
+
+#header {
+    -fx-alignment: center-left;
+    -fx-background-color: -my-surface-alt;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-style: solid;
+    -fx-border-color: -my-border;
+    -fx-min-height: 32;
+    -fx-pref-height: 32;
+    -fx-padding: 0 8 0 8;
+    -fx-font-size: 16;
+    -fx-text-fill: -my-heading;
+}
+
+#flat-header {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: -my-heading;
+}
+
+#flat-button {
+    -fx-background-color: transparent;
+}
+
+#flat-button:hover {
+    -fx-background-color: -my-hover;
+}
+
+#flat-button:pressed {
+    -fx-background-color: -my-pressed;
+}
+
+#flat-button:selected {
+    -fx-background-color: -my-selected;
+}
+
+#bordered {
+    -fx-border-width: 1;
+    -fx-border-style: solid;
+    -fx-border-color: -my-base;
+}
+
+#flat {
+    -fx-border-width: 0;
+}

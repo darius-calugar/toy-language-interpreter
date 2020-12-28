@@ -27,6 +27,6 @@ public class NullStatement implements IStatement {
 
     @Override
     public String toString() {
-        return "_;";
+        return "_";
     }
 }
