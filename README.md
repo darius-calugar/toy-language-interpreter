@@ -14,7 +14,7 @@ Java-based interpreter for a custom programming language.
     - Relational expressions
     - File input operations for programs
     - Program state file logging
-- Reworks:
+- Modifications:
     - New console UI system
 #### **23/11/2020** - "Heap Update" `v0.3a`
 - Additions:
@@ -26,3 +26,13 @@ Java-based interpreter for a custom programming language.
 - Additions:
     - Concurrent program execution
     - Fork statement
+#### **23/12/2020** - "Type-Checker Update" `v0.5a`
+- Additions:
+    - Pre-execution type checking
+#### **23/01/2021** - "GUI Update" `v0.6a`
+- Additions:
+    - Graphical User Interface
+    - Program Selection Screen
+    - Program Execution Screen
+- Modifications:
+    - Changed log naming and storage
