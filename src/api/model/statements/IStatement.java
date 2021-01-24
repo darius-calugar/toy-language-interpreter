@@ -2,6 +2,8 @@ package api.model.statements;
 
 import api.model.ProgramState;
 import api.model.collections.IMap;
+import api.model.exceptions.ExpectedRefTypeException;
+import api.model.exceptions.InvalidTypeException;
 import api.model.exceptions.MyException;
 import api.model.types.IType;
 
@@ -21,7 +23,7 @@ public interface IStatement {
      */
     ProgramState execute(ProgramState state) throws MyException;
 
-    IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment);
+    IMap<String, IType> typeCheck(IMap<String, IType> typeEnvironment) throws InvalidTypeException, ExpectedRefTypeException;
 
     /**
      @return Generated deep copy of the statement.

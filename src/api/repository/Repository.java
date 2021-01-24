@@ -9,8 +9,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,5 +71,11 @@ public class Repository implements IRepository {
     public void setStates(List<ProgramState> states) {
         this.states.clear();
         this.states.addAll(states);
+    }
+
+    public static String generateLogPath(Date date) {
+        return System.getProperty("user.dir") + "/logs/log_" +
+               new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(date) +
+               ".txt";
     }
 }

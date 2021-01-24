@@ -134,7 +134,7 @@
 
 .split-pane > .split-pane-divider {
     -fx-background-color: -my-border;
-    -fx-padding: 2;
+    -fx-padding: 1;
 }
 
 .context-menu {
@@ -162,9 +162,6 @@
     -fx-border-width: 0 0 1 0;
     -fx-border-style: solid;
     -fx-border-color: -my-border;
-    -fx-min-height: 32;
-    -fx-pref-height: 32;
-    -fx-padding: 0 8 0 8;
 }
 
 #status-bar {

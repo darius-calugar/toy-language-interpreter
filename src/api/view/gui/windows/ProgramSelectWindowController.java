@@ -7,6 +7,8 @@ import api.model.collections.Heap;
 import api.model.collections.MyList;
 import api.model.collections.MyMap;
 import api.model.collections.MyStack;
+import api.model.exceptions.ExpectedRefTypeException;
+import api.model.exceptions.InvalidTypeException;
 import api.model.statements.IStatement;
 import api.repository.Repository;
 import javafx.application.Platform;
@@ -15,13 +17,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Objects;
@@ -35,11 +35,15 @@ public class ProgramSelectWindowController {
     @FXML
     private TextArea             programPreviewTextArea;
     @FXML
+    private Button               browseButton;
+    @FXML
     private Button               helpButton;
     @FXML
     private Button               selectButton;
     @FXML
     private Button               cancelButton;
+    @FXML
+    private TextField            logNameTextField;
 
     @FXML
     private void initialize() {
@@ -60,6 +64,7 @@ public class ProgramSelectWindowController {
                     .trim()
                     : ""
             );
+            logNameTextField.setText(Repository.generateLogPath(new Date()));
         });
     }
 
@@ -78,6 +83,8 @@ public class ProgramSelectWindowController {
     @FXML
     void onSelect() {
         try {
+            selectedStatement.typeCheck(new MyMap<>());
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ProgramExecutionWindow.fxml"));
             Stage      stage  = (Stage) selectButton.getScene().getWindow();
             stage.setScene(new Scene(loader.load()));
@@ -92,14 +99,23 @@ public class ProgramSelectWindowController {
                                     new Heap(),
                                     selectedStatement
                             ),
-                            "logs/log_" +
-                            new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss-SSS").format(new Date()) +
-                            ".txt"
+                            logNameTextField.getText()
                     )
             ));
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+        } catch (IOException exception) {
+            new Alert(Alert.AlertType.WARNING, "Unknown error occurred when loading scene.", ButtonType.OK).show();
+        } catch (ExpectedRefTypeException | InvalidTypeException exception) {
+            new Alert(Alert.AlertType.WARNING, "TypeChecker detected inconsistent types.", ButtonType.OK).show();
         }
+    }
+
+    @FXML
+    void onBrowse() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("Text Files","*.txt"));
+        var file = fileChooser.showOpenDialog(browseButton.getScene().getWindow());
+        logNameTextField.setText(file.getPath());
     }
 
     @FXML

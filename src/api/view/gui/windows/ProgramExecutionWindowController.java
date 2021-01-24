@@ -109,14 +109,14 @@ public class ProgramExecutionWindowController {
     private void handleRunAll() {
         isLoading.setValue(true);
         statusText.setValue("Running all steps...");
-        appController.getValue().allStep();
         var time = Instant.now().toEpochMilli();
 
-        updateStateData();
+        appController.getValue().allStep();
 
         time = Instant.now().minusMillis(time).toEpochMilli();
+        updateStateData();
         isLoading.setValue(false);
-        statusText.setValue(String.format("Ran one step (%dms)", time));
+        statusText.setValue(String.format("Ran all steps (%dms)", time));
     }
 
     @FXML
@@ -150,8 +150,8 @@ public class ProgramExecutionWindowController {
         appControllerInstance.getExecutor().shutdownNow();
         appControllerInstance.getRepository().setStates(states);
 
-        updateStateData();
         time = Instant.now().minusMillis(time).toEpochMilli();
+        updateStateData();
         isLoading.setValue(false);
         statusText.setValue(String.format("Ran one step (%dms)", time));
     }

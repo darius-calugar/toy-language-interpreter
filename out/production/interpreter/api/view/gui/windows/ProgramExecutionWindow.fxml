@@ -2,21 +2,15 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.Accordion?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -30,98 +24,121 @@
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
-                <MenuBar id="menu-bar">
-                    <menus>
-                        <Menu mnemonicParsing="false" text="File">
-                            <items>
-                        <MenuItem mnemonicParsing="false" text="Select Program..." />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Open Log Folder..." />
-                        <MenuItem mnemonicParsing="false" text="Change Log Location..." />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" text="Exit" />
-                            </items>
-                        </Menu>
-                    </menus>
-                </MenuBar>
-                <HBox id="tool-bar" alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="32.0" spacing="4.0">
+                <MenuBar id="menu-bar" />
+                <HBox id="tool-bar" alignment="BASELINE_RIGHT" maxHeight="-Infinity" spacing="4.0">
                     <children>
-                  <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                          <Button id="flat-button" fx:id="buttonRunAll" mnemonicParsing="false" onAction="#handleRunAll" prefHeight="20.0">
+                  <Label text="Run Configurations: " />
+                          <Button fx:id="buttonRunAll" mnemonicParsing="false" onAction="#handleRunAll" prefHeight="20.0">
                               <graphic>
-                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                      <viewport>
-                                          <Rectangle2D />
-                                      </viewport>
-                                      <image>
-                                          <Image url="@../resources/run_all.png" />
-                                      </image>
-                                  </ImageView>
+                        <HBox>
+                           <children>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                            <viewport>
+                                                <Rectangle2D />
+                                            </viewport>
+                                            <image>
+                                                <Image url="@../resources/run_all.png" />
+                                            </image>
+                                        </ImageView>
+                              <Label text="All Steps">
+                                 <padding>
+                                    <Insets left="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
                               </graphic>
-                     <tooltip>
-                        <Tooltip text="Run All Steps" />
-                     </tooltip>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                           </Button>
-                          <Button id="flat-button" fx:id="buttonRunOnce" mnemonicParsing="false" onAction="#handleRunOnce" prefHeight="20.0">
+                          <Button fx:id="buttonRunOnce" mnemonicParsing="false" onAction="#handleRunOnce" prefHeight="20.0">
                               <graphic>
-                                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                                      <image>
-                                          <Image url="@../resources/run_one.png" />
-                                      </image>
-                                  </ImageView>
+                        <HBox>
+                           <children>
+                                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../resources/run_one.png" />
+                                            </image>
+                                        </ImageView>
+                              <Label text="One Step">
+                                 <padding>
+                                    <Insets left="4.0" />
+                                 </padding>
+                              </Label>
+                           </children>
+                        </HBox>
                               </graphic>
-                     <tooltip>
-                        <Tooltip text="Run One Step" />
-                     </tooltip>
                           </Button>
                     </children>
                <VBox.margin>
                   <Insets />
                </VBox.margin>
                <padding>
-                  <Insets left="8.0" right="8.0" />
+                  <Insets bottom="4.0" left="8.0" right="8.0" top="4.0" />
                </padding>
                 </HBox>
             </children>
         </VBox>
     </top>
     <center>
-        <SplitPane dividerPositions="0.5" BorderPane.alignment="CENTER">
+        <SplitPane dividerPositions="0.7" orientation="VERTICAL" BorderPane.alignment="CENTER">
             <items>
-                <VBox id="bordered">
-                    <children>
-                  <HBox id="header">
+            <SplitPane dividerPositions="0.25, 0.5, 0.75">
+               <items>
+                  <VBox>
                      <children>
-                                <Label text="Global State" />
+                        <HBox id="header">
+                           <children>
+                              <Label text="Symbol Table" />
+                           </children>
+                        </HBox>
+                                    <TableView id="flat" fx:id="symbolTableView" VBox.vgrow="ALWAYS">
+                                        <columns>
+                                            <TableColumn fx:id="SymbolTableNameTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Name" />
+                                            <TableColumn fx:id="SymbolTableValueTableColumn" editable="false" minWidth="0.0" prefWidth="100.0" sortable="false" text="Value" />
+                                        </columns>
+                                    </TableView>
                      </children>
-                  </HBox>
-                        <Accordion VBox.vgrow="ALWAYS">
-                            <panes>
-                                <TitledPane animated="false" text="Heap">
-                                    <content>
-                                        <TableView id="flat" fx:id="heapTableView" prefWidth="200.0">
-                                            <columns>
-                                                <TableColumn fx:id="heapAddressTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Address" />
-                                                <TableColumn fx:id="heapValueTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Value" />
-                                            </columns>
-                                        </TableView>
-                                    </content>
-                                </TitledPane>
-                                <TitledPane animated="false" text="Files">
-                                    <content>
-                                        <ListView fx:id="fileListView" prefWidth="200.0" />
-                                    </content>
-                                </TitledPane>
-                                <TitledPane animated="false" text="Output">
-                                    <content>
-                                        <ListView fx:id="outputListView" />
-                                    </content>
-                                </TitledPane>
-                            </panes>
-                        </Accordion>
-                    </children>
-                </VBox>
-                <SplitPane dividerPositions="0.3" orientation="VERTICAL" prefHeight="520.0" prefWidth="400.0">
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <HBox id="header">
+                           <children>
+                              <Label text="Heap" />
+                           </children>
+                        </HBox>
+                                  <TableView id="flat" fx:id="heapTableView" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                      <columns>
+                                          <TableColumn fx:id="heapAddressTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Address" />
+                                          <TableColumn fx:id="heapValueTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Value" />
+                                      </columns>
+                                  </TableView>
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <HBox id="header">
+                           <children>
+                              <Label text="Files" />
+                           </children>
+                        </HBox>
+                                  <ListView fx:id="fileListView" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+                  <VBox>
+                     <children>
+                        <HBox id="header">
+                           <children>
+                              <Label text="Output" />
+                           </children>
+                        </HBox>
+                                  <ListView fx:id="outputListView" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </items>
+            </SplitPane>
+                <SplitPane dividerPositions="0.3" prefHeight="520.0" prefWidth="400.0">
                     <items>
                         <VBox id="bordered">
                             <children>
@@ -130,7 +147,7 @@
                                         <Label text="Active Threads" />
                               <Pane HBox.hgrow="ALWAYS" />
                               <Label text="Count: " />
-                              <TextField fx:id="threadCountField" alignment="CENTER" prefHeight="20.0" prefWidth="32.0" text="0">
+                              <TextField fx:id="threadCountField" alignment="CENTER" editable="false" prefHeight="20.0" prefWidth="32.0" text="0">
                                  <font>
                                     <Font size="11.0" />
                                  </font>
@@ -144,28 +161,12 @@
                             <children>
                         <HBox id="header" alignment="CENTER_LEFT" minHeight="-Infinity" prefHeight="32.0">
                            <children>
+                              <Label text="Execution Stack" />
+                              <Pane HBox.hgrow="ALWAYS" />
                                         <Label fx:id="activeThreadLabel" text="None" />
                            </children>
                         </HBox>
-                                <Accordion VBox.vgrow="ALWAYS">
-                                    <panes>
-                                        <TitledPane animated="false" text="Execution Stack">
-                                            <content>
-                                                <ListView fx:id="executionStackListView" />
-                                            </content>
-                                        </TitledPane>
-                                        <TitledPane animated="false" text="Symbol Table">
-                                            <content>
-                                                <TableView id="flat" fx:id="symbolTableView">
-                                                    <columns>
-                                                        <TableColumn fx:id="SymbolTableNameTableColumn" editable="false" prefWidth="100.0" sortable="false" text="Name" />
-                                                        <TableColumn fx:id="SymbolTableValueTableColumn" editable="false" minWidth="0.0" prefWidth="100.0" sortable="false" text="Value" />
-                                                    </columns>
-                                                </TableView>
-                                            </content>
-                                        </TitledPane>
-                                    </panes>
-                                </Accordion>
+                                    <ListView fx:id="executionStackListView" disable="true" VBox.vgrow="ALWAYS" />
                             </children>
                         </VBox>
                     </items>
