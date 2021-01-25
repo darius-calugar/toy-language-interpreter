@@ -2,50 +2,33 @@ package api.model.collections;
 
 import api.model.exceptions.OutOfBoundsException;
 
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public interface IMap<K, T> {
-    /**
-     Check if a key is defined inside the dictionary
-
-     @param key Target key
-     @return Whether the key is defined inside the dictionary
-     */
-    boolean isDefined(K key);
-
-    /**
-     Set the value of a key.
-     if the key is already defined, it's value is overwritten.
-
-     @param key   Target key
-     @param value New value
-     */
     void set(K key, T value);
 
-    /**
-     Remove the entry defined by a given key.
-
-     @param key Target entry's key
-     @return Removed value of the entry
-     */
     T remove(K key) throws OutOfBoundsException;
 
-    /**
-     Get the value assigned to a given key.
-
-     @param key Target key
-     @return value assigned to the key.
-     */
     T get(K key) throws OutOfBoundsException;
 
-    void setContent(Map<K, T> content);
+    boolean isDefined(K key);
+
+    void clear();
+
+    int size();
+
+    boolean isEmpty();
 
     Map<K, T> getContent();
 
-    Stream<K> getKeys();
+    void setContent(Map<K, T> content);
 
-    Stream<T> getValues();
+    List<Map.Entry<K, T>> getEntries();
+
+    List<K> getKeys();
+
+    List<T> getValues();
 
     MyMap<K, T> deepCopy();
 }

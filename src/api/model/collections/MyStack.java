@@ -2,6 +2,7 @@ package api.model.collections;
 
 import api.model.exceptions.OutOfBoundsException;
 
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +29,11 @@ public class MyStack<T> implements IStack<T> {
     }
 
     @Override
+    public void clear() {
+        stack.clear();
+    }
+
+    @Override
     public int size() {
         return stack.size();
     }
@@ -38,6 +44,29 @@ public class MyStack<T> implements IStack<T> {
     }
 
     public List<T> getContent() {return List.copyOf(stack);}
+
+    @Override
+    public void setContent(List<T> content) {
+        stack.clear();
+        stack.addAll(content);
+    }
+
+    @Override
+    public IStack<T> deepCopy() {
+        try {
+            ByteArrayOutputStream byteOutput   = new ByteArrayOutputStream();
+            ObjectOutputStream    objectOutput = new ObjectOutputStream(byteOutput);
+            objectOutput.writeObject(this);
+            ByteArrayInputStream byteInput   = new ByteArrayInputStream(byteOutput.toByteArray());
+            ObjectInputStream    objectInput = new ObjectInputStream(byteInput);
+            @SuppressWarnings({"unchecked"})
+            var result = (MyStack<T>) objectInput.readObject();
+            return result;
+        } catch (IOException | ClassNotFoundException ioException) {
+            ioException.printStackTrace();
+            return null;
+        }
+    }
 
     @Override
     public String toString() {

@@ -5,16 +5,32 @@ import api.model.exceptions.IllegalHeapAccess;
 import api.model.exceptions.OutOfBoundsException;
 import api.model.values.IValue;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Heap implements IHeap {
-    private Map<Integer, IValue> map             = new HashMap<>();
-    private int                  nextFreeAddress = 1;
+public class MyHeap implements IHeap, Serializable {
+    private final Map<Integer, IValue> map             = new HashMap<>();
+    private       int                  nextFreeAddress = 1;
 
     @Override
     public boolean isDefined(Integer address) {
         return map.containsKey(address);
+    }
+
+    @Override
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
+    public int size() {
+        return map.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return map.isEmpty();
     }
 
     @Override
@@ -56,23 +72,28 @@ public class Heap implements IHeap {
 
     @Override
     public void setContent(Map<Integer, IValue> content) {
-        map = content;
+        map.clear();
+        map.putAll(content);
     }
 
     @Override
     public Map<Integer, IValue> getContent() {
-        return map;
+        return Map.copyOf(map);
     }
 
-    private int ComputeNextFreeAddress() throws HeapFullException {
-        // TODO - Test this
-        var lastPotentialAddress = nextFreeAddress > 1 ? nextFreeAddress - 1 : Integer.MAX_VALUE;
-        while (map.containsKey(nextFreeAddress)) {
-            nextFreeAddress = nextFreeAddress < Integer.MAX_VALUE ? nextFreeAddress + 1 : 1;
-            if (lastPotentialAddress == nextFreeAddress)
-                throw new HeapFullException();
+    @Override
+    public IHeap deepCopy() {
+        try {
+            ByteArrayOutputStream byteOutput   = new ByteArrayOutputStream();
+            ObjectOutputStream    objectOutput = new ObjectOutputStream(byteOutput);
+            objectOutput.writeObject(this);
+            ByteArrayInputStream byteInput   = new ByteArrayInputStream(byteOutput.toByteArray());
+            ObjectInputStream    objectInput = new ObjectInputStream(byteInput);
+            return (MyHeap) objectInput.readObject();
+        } catch (IOException | ClassNotFoundException ioException) {
+            ioException.printStackTrace();
+            return null;
         }
-        return nextFreeAddress;
     }
 
     @Override
@@ -87,5 +108,15 @@ public class Heap implements IHeap {
         if (result.length() > 0)
             result.deleteCharAt(result.length() - 1);
         return result.toString();
+    }
+
+    private int ComputeNextFreeAddress() throws HeapFullException {
+        var lastPotentialAddress = nextFreeAddress > 1 ? nextFreeAddress - 1 : Integer.MAX_VALUE;
+        while (map.containsKey(nextFreeAddress)) {
+            nextFreeAddress = nextFreeAddress < Integer.MAX_VALUE ? nextFreeAddress + 1 : 1;
+            if (lastPotentialAddress == nextFreeAddress)
+                throw new HeapFullException();
+        }
+        return nextFreeAddress;
     }
 }

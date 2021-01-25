@@ -29,7 +29,7 @@ public class PrintStatement implements IStatement {
         Locks.heapLock.readLock().unlock();
 
         Locks.outputListLock.writeLock().lock();
-        state.getOutputList().push(value);
+        state.getOutputList().add(value);
         Locks.outputListLock.writeLock().unlock();
         return null;
     }

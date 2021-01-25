@@ -4,7 +4,7 @@ import api.BuiltInExamples;
 import api.controller.Controller;
 import api.model.ProgramState;
 import api.model.collections.MyMap;
-import api.model.collections.Heap;
+import api.model.collections.MyHeap;
 import api.model.collections.MyList;
 import api.model.collections.MyStack;
 import api.model.exceptions.MyException;
@@ -51,7 +51,7 @@ public class AppCLI {
                                 new MyMap<>(),
                                 new MyList<>(),
                                 new MyMap<>(),
-                                new Heap(), BuiltInExamples.values()[i].getStatementTree());
+                                new MyHeap(), BuiltInExamples.values()[i].getStatementTree());
                         var repository = new Repository(programState, logPath);
                         return new RunExampleCommand(String.valueOf(i + 1), "Example " + (i + 1), new Controller(repository));
                     })

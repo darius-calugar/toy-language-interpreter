@@ -5,11 +5,11 @@ import api.model.exceptions.OutOfBoundsException;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class MyMap<K, T> implements IMap<K, T>, Serializable {
-    private java.util.Map<K, T> map = new HashMap<>();
+    private final java.util.Map<K, T> map = new HashMap<>();
 
     @Override
     public boolean isDefined(K key) {
@@ -36,23 +36,44 @@ public class MyMap<K, T> implements IMap<K, T>, Serializable {
     }
 
     @Override
-    public void setContent(Map<K, T> content) {
-        map = content;
+    public void clear() {
+        map.clear();
+    }
+
+    @Override
+    public int size() {
+        return map.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return map.isEmpty();
     }
 
     @Override
     public Map<K, T> getContent() {
-        return map;
+        return Map.copyOf(map);
     }
 
     @Override
-    public Stream<K> getKeys() {
-        return map.keySet().stream();
+    public void setContent(Map<K, T> content) {
+        map.clear();
+        map.putAll(content);
     }
 
     @Override
-    public Stream<T> getValues() {
-        return map.values().stream();
+    public List<Map.Entry<K, T>> getEntries() {
+        return List.copyOf(map.entrySet());
+    }
+
+    @Override
+    public List<K> getKeys() {
+        return List.copyOf(map.keySet());
+    }
+
+    @Override
+    public List<T> getValues() {
+        return List.copyOf(map.values());
     }
 
     @Override

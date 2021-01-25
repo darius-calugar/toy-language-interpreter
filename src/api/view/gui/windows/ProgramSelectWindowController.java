@@ -3,7 +3,7 @@ package api.view.gui.windows;
 import api.BuiltInExamples;
 import api.controller.Controller;
 import api.model.ProgramState;
-import api.model.collections.Heap;
+import api.model.collections.MyHeap;
 import api.model.collections.MyList;
 import api.model.collections.MyMap;
 import api.model.collections.MyStack;
@@ -96,7 +96,7 @@ public class ProgramSelectWindowController {
                                     new MyMap<>(),
                                     new MyList<>(),
                                     new MyMap<>(),
-                                    new Heap(),
+                                    new MyHeap(),
                                     selectedStatement
                             ),
                             logNameTextField.getText()
