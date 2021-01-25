@@ -7,6 +7,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MyMap<K, T> implements IMap<K, T>, Serializable {
     private final java.util.Map<K, T> map = new HashMap<>();
@@ -95,15 +96,8 @@ public class MyMap<K, T> implements IMap<K, T>, Serializable {
 
     @Override
     public String toString() {
-        var result = new StringBuilder();
-        for (var entry : map.entrySet()) {
-            result.append(entry.getKey().toString());
-            result.append(" -> ");
-            result.append(entry.getValue().toString());
-            result.append('\n');
-        }
-        if (result.length() > 0)
-            result.deleteCharAt(result.length() - 1);
-        return result.toString();
+        return "[" + map.entrySet().stream()
+                .map(x -> "{" + x.getKey() + ":" + x.getValue() + "}")
+                .collect(Collectors.joining(", ")) + "]";
     }
 }

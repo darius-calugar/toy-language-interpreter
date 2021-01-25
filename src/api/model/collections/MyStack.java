@@ -5,6 +5,7 @@ import api.model.exceptions.OutOfBoundsException;
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyStack<T> implements IStack<T> {
     private final java.util.Deque<T> stack = new LinkedList<>();
@@ -70,13 +71,8 @@ public class MyStack<T> implements IStack<T> {
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder();
-        for (var elem : stack) {
-            result.append(elem.toString());
-            result.append('\n');
-        }
-        if (result.length() > 0)
-            result.deleteCharAt(result.length() - 1);
-        return result.toString();
+        return "[" + stack.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", ")) + "]";
     }
 }

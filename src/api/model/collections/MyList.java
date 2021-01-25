@@ -5,6 +5,7 @@ import api.model.exceptions.OutOfBoundsException;
 import java.io.*;
 import java.util.List;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class MyList<T> implements IList<T>, Serializable {
     private final java.util.List<T> list = new Vector<>();
@@ -90,14 +91,8 @@ public class MyList<T> implements IList<T>, Serializable {
 
     @Override
     public String toString() {
-        var stringBuilder      = new StringBuilder();
-        var shouldAddSeparator = false;
-        for (var element : list) {
-            if (shouldAddSeparator)
-                stringBuilder.append("\n");
-            stringBuilder.append(element.toString());
-            shouldAddSeparator = true;
-        }
-        return stringBuilder.toString();
+        return "[" + list.stream()
+                .map(Object::toString)
+                .collect(Collectors.joining(", ")) + "]";
     }
 }
