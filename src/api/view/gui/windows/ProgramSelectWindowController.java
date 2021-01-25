@@ -37,8 +37,6 @@ public class ProgramSelectWindowController {
     @FXML
     private Button               browseButton;
     @FXML
-    private Button               helpButton;
-    @FXML
     private Button               selectButton;
     @FXML
     private Button               cancelButton;

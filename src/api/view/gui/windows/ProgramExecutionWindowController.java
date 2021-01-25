@@ -7,46 +7,43 @@ import api.model.collections.IHeap;
 import api.model.statements.IStatement;
 import api.model.values.IValue;
 import api.model.values.StringValue;
-import api.view.gui.model.SimpleTableViewEntry;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class ProgramExecutionWindowController {
     ObjectProperty<Controller>   appController = new SimpleObjectProperty<>(null);
     ObjectProperty<ProgramState> viewedThread  = new SimpleObjectProperty<>(null);
-    BooleanProperty              isLoading     = new SimpleBooleanProperty(false);
-    BooleanProperty              isFinished    = new SimpleBooleanProperty(false);
     StringProperty               statusText    = new SimpleStringProperty("");
 
+    @FXML
+    private TableView<Map.Entry<String, IValue>>  symbolTableView;
+    @FXML
+    private TableView<Map.Entry<Integer, IValue>> heapTableView;
+    @FXML
+    private ListView<StringValue>                 fileListView;
+    @FXML
+    private ListView<IValue>                      outputListView;
+    @FXML
+    private ListView<IStatement>                  executionStackListView;
 
     @FXML
-    private TableView<SimpleTableViewEntry> heapTableView;
+    private TableColumn<Map.Entry<String, IValue>, String>   SymbolTableNameTableColumn;
     @FXML
-    private ListView<StringValue>           fileListView;
+    private TableColumn<Map.Entry<String, IValue>, IValue>   SymbolTableValueTableColumn;
     @FXML
-    private ListView<IValue>                outputListView;
+    private TableColumn<Map.Entry<Integer, IValue>, Integer> heapAddressTableColumn;
     @FXML
-    private ListView<IStatement>            executionStackListView;
-    @FXML
-    private TableView<SimpleTableViewEntry> symbolTableView;
-
-    @FXML
-    private TableColumn<SimpleTableViewEntry, String> heapAddressTableColumn;
-    @FXML
-    private TableColumn<SimpleTableViewEntry, String> heapValueTableColumn;
-    @FXML
-    private TableColumn<SimpleTableViewEntry, String> SymbolTableNameTableColumn;
-    @FXML
-    private TableColumn<SimpleTableViewEntry, String> SymbolTableValueTableColumn;
+    private TableColumn<Map.Entry<Integer, IValue>, IValue>  heapValueTableColumn;
 
     @FXML
     private ListView<ProgramState> activeThreadsListView;
@@ -54,39 +51,22 @@ public class ProgramExecutionWindowController {
     private Label                  activeThreadLabel;
     @FXML
     private TextField              threadCountField;
-
     @FXML
-    private Button            buttonRunAll;
-    @FXML
-    private Button            buttonRunOnce;
-    @FXML
-    private ProgressIndicator runProgressIndicator;
-    @FXML
-    private Label             statusLabel;
+    private Label                  statusLabel;
 
     @FXML
     private void initialize() {
-        isLoading.setValue(true);
-        heapAddressTableColumn.setCellValueFactory(new PropertyValueFactory<>("first"));
-        heapValueTableColumn.setCellValueFactory(new PropertyValueFactory<>("second"));
 
-        SymbolTableNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("first"));
-        SymbolTableValueTableColumn.setCellValueFactory(new PropertyValueFactory<>("second"));
+        heapAddressTableColumn.setCellValueFactory(column -> new ReadOnlyObjectWrapper<>(column.getValue().getKey()));
+        heapValueTableColumn.setCellValueFactory(column -> new ReadOnlyObjectWrapper<>(column.getValue().getValue()));
 
-        isLoading.addListener((observable, oldValue, newValue) -> {
-            runProgressIndicator.setVisible(newValue);
-            buttonRunAll.setDisable(isFinished.get() || newValue);
-            buttonRunOnce.setDisable(isFinished.get() || newValue);
-        });
-        isFinished.addListener((observable, oldValue, newValue) -> {
-            buttonRunAll.setDisable(newValue);
-            buttonRunOnce.setDisable(newValue);
-        });
+        SymbolTableNameTableColumn.setCellValueFactory(column -> new ReadOnlyObjectWrapper<>(column.getValue().getKey()));
+        SymbolTableValueTableColumn.setCellValueFactory(column -> new ReadOnlyObjectWrapper<>(column.getValue().getValue()));
+
         statusText.addListener((observableValue, oldValue, newValue) -> {
             statusLabel.setText(newValue);
         });
         appController.addListener((observableValue, oldValue, newValue) -> {
-            isLoading.setValue(false);
             if (viewedThread.get() == null)
                 appController.get().getRepository().getStates()
                         .stream()
@@ -107,7 +87,6 @@ public class ProgramExecutionWindowController {
 
     @FXML
     private void handleRunAll() {
-        isLoading.setValue(true);
         statusText.setValue("Running all steps...");
         var time = Instant.now().toEpochMilli();
 
@@ -115,13 +94,11 @@ public class ProgramExecutionWindowController {
 
         time = Instant.now().minusMillis(time).toEpochMilli();
         updateStateData();
-        isLoading.setValue(false);
         statusText.setValue(String.format("Ran all steps (%dms)", time));
     }
 
     @FXML
     private void handleRunOnce() {
-        isLoading.setValue(true);
         statusText.setValue("Running one step...");
         var time = Instant.now().toEpochMilli();
 
@@ -152,7 +129,6 @@ public class ProgramExecutionWindowController {
 
         time = Instant.now().minusMillis(time).toEpochMilli();
         updateStateData();
-        isLoading.setValue(false);
         statusText.setValue(String.format("Ran one step (%dms)", time));
     }
 
@@ -167,11 +143,14 @@ public class ProgramExecutionWindowController {
             return;
         }
 
+        symbolTableView.setItems(FXCollections.observableList(
+                viewedThread != null ?
+                        List.copyOf(viewedThread.get().getSymbolTable().getContent().entrySet()) :
+                        List.of()
+        ));
         appController.getValue().getRepository().getStates().stream().findAny().ifPresent(
                 (state -> heapTableView.setItems(FXCollections.observableList(
-                        List.copyOf(state.getHeap().getContent().entrySet()).stream()
-                                .map(entry -> new SimpleTableViewEntry(entry.getKey(), entry.getValue()))
-                                .collect(Collectors.toList())
+                        new ArrayList<>(List.copyOf(state.getHeap().getContent().entrySet()))
                 )))
         );
         appController.getValue().getRepository().getStates().stream().findAny().ifPresent(
@@ -190,13 +169,6 @@ public class ProgramExecutionWindowController {
         executionStackListView.setItems(FXCollections.observableList(
                 viewedThread != null ?
                         viewedThread.get().getExecutionStack().getContent() :
-                        List.of()
-        ));
-        symbolTableView.setItems(FXCollections.observableList(
-                viewedThread != null ?
-                        List.copyOf(viewedThread.get().getSymbolTable().getContent().entrySet()).stream()
-                                .map(entry -> new SimpleTableViewEntry(entry.getKey(), entry.getValue()))
-                                .collect(Collectors.toList()) :
                         List.of()
         ));
         threadCountField.setText(viewedThread != null ?

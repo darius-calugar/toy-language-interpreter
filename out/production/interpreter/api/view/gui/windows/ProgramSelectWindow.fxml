@@ -45,11 +45,7 @@
             </VBox>
             <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="CENTER" GridPane.vgrow="NEVER">
                <children>
-                  <ButtonBar nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="NEVER">
-                    <buttons>
-                      <Button fx:id="helpButton" mnemonicParsing="false" onAction="#onHelp" text="Help" />
-                    </buttons>
-                  </ButtonBar>
+                  <ButtonBar nodeOrientation="RIGHT_TO_LEFT" HBox.hgrow="NEVER" />
                   <ButtonBar layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS">
                      <buttons>
                         <Button fx:id="selectButton" disable="true" mnemonicParsing="false" onAction="#onSelect" text="Select" />
